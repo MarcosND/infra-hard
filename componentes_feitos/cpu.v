@@ -18,6 +18,7 @@ module cpu(
     wire [2:0] Alu_control;
     wire [3:0] MEMtoReg;
     wire [2:0] PCsource;
+    wire [2:0] IorD;
     
 
     //Flags
@@ -48,6 +49,19 @@ module cpu(
     wire [31:0] SE16_out;
     wire [31:0] AluA_out;
     wire [31:0] AluB_out;
+    wire [31:0] Exception_out;
+    wire [31:0] result_out;
+    wire [31:0] IorD_out;
+    wire [31:0] Shiftleft_26to28_out;
+    wire [31:0] EPC_out;
+    wire [31:0] PCsource_out;
+    wire [31:0] SL2_out;
+    wire [31:0] LS_out;
+    wire [31:0] HI_out;
+    wire [31:0] LO_out;
+    wire [31:0] SE1_32_out;
+    wire [31:0] ShiftReg_out;
+    wire [31:0] MEMtoReg_out;
 
 
     // registradores
@@ -144,12 +158,48 @@ module cpu(
         AluB_out,
     );
 
+    mux_IorD IorD_(
+        IorD,
+        PC_out,
+        Excp_out,
+        ULA_out,
+        A_out,
+        result_out,
+        IorD_out,
+    );
+
+    mux_PCsource PcSource_(
+        PCsource,
+        Shiftleft_26to28_out,
+        EPC_out,
+        result_out,
+        ALU_out,
+        PCsource_out
+    );
+
+    mux_MEMtoReg MEMtoReg_(
+        MEMtoReg,
+        ULA_out,
+        LS_out,
+        HI_out,
+        LO_out,
+        SE1_32_out,
+        result_out,
+        SE16_out,
+        ShiftReg_out,
+        MEMtoReg_out,
+    );
 
     // sign extends
 
     sign_extend_16 SE16_(
-        OFFSET
+        OFFSET,
         SE16_out;
+    );
+
+    shift_left_2 SL2_(
+        SE16_out,
+        SL2_out,
     );
 
     ctrl_unit CTRL_(
