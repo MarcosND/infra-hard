@@ -14,23 +14,23 @@ module mux_mentoreg (
 
 always @(*) begin
     case(mentoreg)
-        0:
+        4'b0000:
             mentoreg_out <= HI_out;
-        1:
+        4'b0001:
             mentoreg_out <= LO_out;
-        2:
+        4'b0010:
             mentoreg_out <= result;
-        3:
+        4'b0011:
             mentoreg_out <= LS_out;
-        4:
+        4'b0100:
             mentoreg_out <= Shift_Left_16_out;
-        5:
+        4'b0101:
             mentoreg_out <= ALU_out;
-        6:
+        4'b0110:
             mentoreg_out <= Shift_Reg_out;
-        7:
+        4'b0111:
             mentoreg_out <= Sign_extend_1to32_out;
-        8:
+        4'b1000:
             mentoreg_out <= 32'd227;
     endcase
 end
