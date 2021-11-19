@@ -7,6 +7,7 @@ module mux_ulaB(
 )
 
 assign mux_ulaB_out = (seletor == 2'b00) ? Reg_B_info: (seletor == 2'b10) ? sigLef: 
-                      (seletor == 2'b01) ? 32'd4: (seletor == 2'b11) ? sigLef:
+                      (seletor == 2'b01) ? 32'd4: (seletor == 2'b11) ? sigEx;
+
 
 endmodule
