@@ -16,7 +16,12 @@ module cpu(
     wire AluSrcA; // falta colocar o tamanho de alguns desses sinais
     wire AluSrcB;
     wire [2:0] Alu_control;
+    wire [3:0] MEMtoReg;
+    wire [2:0] PCsource;
+    
 
+    //Flags
+    
     wire Overflow;
     wire Ng;
     wire Zr;
