@@ -1,7 +1,7 @@
 module cpu(
     input wire clock,
-    input wire reset,
-):
+    input wire reset
+);
 
 
 
@@ -37,7 +37,7 @@ module cpu(
     wire [4:0] RS;
     wire [4:0] RT;
     wire [15:0] OFFSET;
-    wire [4:0] WriteReg_in
+    wire [4:0] WriteReg_in;
 
 
     wire [31:0] ULA_out;
@@ -203,7 +203,7 @@ module cpu(
 
     sign_extend_16 SE16_(
         OFFSET,
-        SE16_out;
+        SE16_out
     );
 
     shift_left_2 SL2_(
