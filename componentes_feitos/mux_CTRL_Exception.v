@@ -1,6 +1,6 @@
 module mux_CTRL_Exception (
-    input wire [1:0] Exception,
-    output wire [31:0] Expction_out
+    input wire [1:0] Exception ,
+    output reg [31:0] Expction_out 
 );
 always @(*) begin
     case(Exception)

@@ -2,7 +2,7 @@ module mux_Shift_Src (
     input wire [1:0] Shift_Src,
     input wire [31:0] Reg_A_info,
     input wire [31:0] Reg_B_info,
-    output wire [31:0] Shift_Src_out
+    output reg  [31:0] Shift_Src_out
 );
 always @(*) begin
         case (Shift_Src)

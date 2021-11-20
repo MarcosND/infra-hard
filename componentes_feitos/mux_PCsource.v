@@ -4,7 +4,7 @@ module mux_PCsource (
     input wire [31:0] EPC_out,
     input wire [31:0] result,
     input wire [31:0] ALU_out,
-    output wire [31:0] PCsource_out
+    output reg [31:0] PCsource_out
     
 );
 
