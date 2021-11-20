@@ -58,6 +58,7 @@ module cpu(
     wire [31:0] EPC_out;
     wire [31:0] PCsource_out;
     wire [31:0] SL2_out;
+    wire [31:0] SS_out;
     wire [31:0] LS_out;
     wire [31:0] HI_out;
     wire [31:0] LO_out;
