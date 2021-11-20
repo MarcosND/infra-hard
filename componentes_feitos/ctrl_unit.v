@@ -1,4 +1,4 @@
-module ctrl_unit {
+module ctrl_unit (
     
     input wire  clk,
     input wire  reset,
@@ -22,7 +22,7 @@ module ctrl_unit {
     
     
     //controladores dos muxes
-    output reg [2:0]         M_writeReg,
+    output reg [2:0]    M_writeReg,
     output reg [1:0]    AluSrcA,
     output reg [1:0]    AluSrcB, 
     
@@ -67,9 +67,9 @@ module ctrl_unit {
    input wire [31:0] MEMtoReg_out,
    input wire [31:0] Excepction_out,
    input wire [31:0] IorD_out,
-   input wire [31:0] ALUOut_out,
+   input wire [31:0] ALUOut_out
 
-};   
+);   
 
 //variaveis usadas
 
@@ -81,11 +81,11 @@ reg[2:0] COUNTER;
     //Estados principais da maquina
     parameter ST_FETCH_1 = 3'b000 ;
     parameter ST_FETCH_2 = 3'b001 ;
-    parameter DECODE = 3'b010;
+    parameter ST_DECODE = 3'b010;
     parameter ST_ADD_1 = 3'b011;
     parameter ST_ADD_2 = 3'b100;
     parameter ST_RESET = 3'b101 ;    
-    parameter ST_CLOSE_WRITE = 3'b110
+    parameter ST_CLOSE_WRITE = 3'b110;
 
     //Opcode codes as aliases
     parameter  ADD = 6'b000000 ;
@@ -95,7 +95,7 @@ reg[2:0] COUNTER;
 
 initial begin
   //reset inicial na maquina
-  rst_out = 1'b1
+  rst_out = 1'b1;
 end
 
 always @(posedge clk) begin
@@ -108,22 +108,21 @@ always @(posedge clk) begin
         PC_write            = 1'b0;
         MEM_write           = 1'b0;
         IR_write            = 1'b0;
-        RB_w                = 1'b0;
         AB_w                = 1'b0;
         Regwrite            = 1'b1;
-        AluSrcA             = 2'b00;
-        AluSrcB             = 2'b00;
-        [2:0] Alu_control   = 3'b000;
+        AluSrcA [1:0]       = 2'b00;
+        AluSrcB [1:0]       = 2'b00;
+        Alu_control [2:0]    = 3'b000;
         ALUOutCtrl          = 1'b0;
-        [3:0] MEMtoReg      = 4'b1000;
-        [2:0] PCsource      = 3'b000;
-        [1:0] Exception     = 2'b00;
-        [2:0] IorD          = 3'b000;
+        MEMtoReg [3:0]     = 4'b1000;
+        PCsource [2:0]     = 3'b000;
+        IorD   [2:0]        = 3'b000;
         
-        
-         end
+        STATE = ST_FETCH_1;
+         
+        end
 
-        STATE = ST_FETCH_1:
+        
     
 
     
@@ -132,21 +131,19 @@ always @(posedge clk) begin
         case (STATE)
             ST_FETCH_1: begin
              //Define os sinais
-        M_writeReg[1:0]     = 2'b000; 
+        M_writeReg[1:0]     = 2'b00; 
         PC_write            = 1'b0; 
         MEM_write           = 1'b0;
         IR_write            = 1'b0;
-        RB_w                = 1'b0;
         AB_w                = 1'b0;
         Regwrite            = 1'b0; // 
-        AluSrcA             = 2'b00;
-        AluSrcB             = 2'b01; // 
-        [2:0] Alu_control   = 3'b001; //
+        AluSrcA [1:0]       = 2'b00;
+        AluSrcB [1:0]       = 2'b01; // 
+        Alu_control [2:0]   = 3'b001; //
         ALUOutCtrl          = 1'b0;
-        [3:0] MEMtoReg      = 4'b0000; //
-        [2:0] PCsource      = 3'b000;
-        [1:0] Exception     = 2'b00;
-        [2:0] IorD          = 3'b000;   
+        MEMtoReg [3:0]    = 4'b0000; //
+        PCsource [2:0]    = 3'b000;
+        IorD   [2:0]     = 3'b000;   
                 
         STATE = ST_FETCH_2;   
             
@@ -159,17 +156,15 @@ always @(posedge clk) begin
         PC_write            = 1'b1; // 
         MEM_write           = 1'b0;
         IR_write            = 1'b0;
-        RB_w                = 1'b0;
         AB_w                = 1'b0;
         Regwrite            = 1'b0; 
-        AluSrcA             = 2'b00;
-        AluSrcB             = 2'b01; 
-        [2:0] Alu_control   = 3'b000;
+        AluSrcA [1:0]       = 2'b00;
+        AluSrcB [1:0]       = 2'b01; 
+        Alu_control [2:0]   = 3'b000;
         ALUOutCtrl          = 1'b0;
-        [3:0] MEMtoReg      = 4'b0000; 
-        [2:0] PCsource      = 3'b010;
-        [1:0] Exception     = 2'b00;
-        [2:0] IorD          = 3'b000; 
+        MEMtoReg [3:0]      = 4'b0000; 
+        PCsource [2:0]      = 3'b010;
+        IorD   [2:0]        = 3'b000; 
         
         STATE = ST_DECODE;
         
@@ -180,17 +175,15 @@ always @(posedge clk) begin
         PC_write            = 1'b1;  
         MEM_write           = 1'b0;
         IR_write            = 1'b1; //
-        RB_w                = 1'b0;
         AB_w                = 1'b1; //
         Regwrite            = 1'b0; 
-        [1:0]AluSrcA        = 2'b00; //
-        [1:0]AluSrcB        = 2'b10; //
-        [2:0] Alu_control   = 3'b001; //
+        AluSrcA [1:0]       = 2'b00; //
+        AluSrcB [1:0]       = 2'b10; //
+        Alu_control [2:0]   = 3'b001; //
         ALUOutCtrl          = 1'b1; //
-        [3:0] MEMtoReg      = 4'b0000; 
-        [2:0] PCsource      = 3'b10;
-        [1:0] Exception     = 2'b00;
-        [2:0] IorD          = 3'b000; 
+        MEMtoReg [3:0]      = 4'b0000; 
+        PCsource [2:0]      = 3'b10;
+        IorD   [2:0]        = 3'b000; 
         
         
             
@@ -201,19 +194,17 @@ always @(posedge clk) begin
         PC_write            = 1'b1;  
         MEM_write           = 1'b0;
         IR_write            = 1'b1; 
-        RB_w                = 1'b0;
         AB_w                = 1'b0;
         Regwrite            = 1'b0; 
-        [1:0]AluSrcA        = 2'b01; //
-        [1:0]AluSrcB        = 2'b00; //
-        [2:0] Alu_control   = 3'b001;
+        AluSrcA [1:0]            = 2'b01; //
+        AluSrcB [1:0]            = 2'b00; //
+        Alu_control [2:0]   = 3'b001;
         ALUOutCtrl          = 1'b0;
-        [3:0] MEMtoReg      = 4'b0000; 
-        [2:0] PCsource      = 3'b010;
-        [1:0] Exception     = 2'b00;
-        [2:0] IorD          = 3'b00; 
+        MEMtoReg [3:0]      = 4'b0000; 
+        PCsource [2:0]      = 3'b010;
+        IorD   [2:0]        = 3'b00; 
             
-                STATE = ST_ADD_2
+                STATE = ST_ADD_2;
         end
             ST_ADD_2: begin
               //Define os sinais
@@ -221,20 +212,18 @@ always @(posedge clk) begin
         PC_write            = 1'b1;  
         MEM_write           = 1'b0;
         IR_write            = 1'b1; 
-        RB_w                = 1'b0;
         AB_w                = 1'b0;
         Regwrite            = 1'b1; //
-        [1:0]AluSrcA        = 2'b01; 
-        [1:0]AluSrcB        = 2'b00; 
-        [2:0] Alu_control   = 3'b001;
+        AluSrcA [1:0]            = 2'b01; 
+        AluSrcB [1:0]            = 2'b00; 
+        Alu_control [2:0]   = 3'b001;
         ALUOutCtrl          = 1'b0;
-        [3:0] MEMtoReg      = 4'b0010; //
-        [2:0] PCsource      = 3'b010;
-        [1:0] Exception     = 2'b00;
-        [2:0] IorD          = 3'b000; 
+        MEMtoReg [3:0]      = 4'b0010; //
+        PCsource [2:0]      = 3'b010;
+        IorD   [2:0]        = 3'b000; 
         
 
-        STATE = CLOSE_WRITE;
+        STATE = ST_CLOSE_WRITE;
 
             end
         ST_CLOSE_WRITE: begin
@@ -243,17 +232,15 @@ always @(posedge clk) begin
         PC_write            = 1'b0;  
         MEM_write           = 1'b0;
         IR_write            = 1'b0; 
-        RB_w                = 1'b0;
         AB_w                = 1'b0;
         Regwrite            = 1'b0; 
-        [1:0]AluSrcA        = 2'b00; 
-        [1:0]AluSrcB        = 2'b00; 
-        [2:0] Alu_control   = 3'b000;
-        ALUOutCtrl          = 1'b0;
-        [3:0] MEMtoReg      = 4'b0000; 
-        [2:0] PCsource      = 3'b000;
-        [1:0] Exception     = 2'b00;
-        [2:0] IorD          = 3'b000; 
+        AluSrcA [1:0]         = 2'b00; 
+        AluSrcB [1:0]         = 2'b00; 
+        Alu_control [2:0]   = 3'b000;
+        ALUOutCtrl            = 1'b0;
+        MEMtoReg [3:0]        = 4'b0000; 
+        PCsource [2:0]        = 3'b000;
+        IorD   [2:0]          = 3'b000; 
         
         
         
