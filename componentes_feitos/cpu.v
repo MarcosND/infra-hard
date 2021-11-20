@@ -84,6 +84,19 @@ module cpu(
         A_out
     );
 
+    ula32 ULA_(
+        AluA_out,
+        AluB_out,
+        Alu_control,
+        ULA_out,
+        Overflow,
+        Ng,
+        Zr,
+        Eq,
+        Gt,
+        Lt,
+    );
+
     Registrador B_(
         clock,
         reset,
@@ -131,18 +144,6 @@ module cpu(
         regB_out,
     );
 
-    ula32 ULA_(
-        AluA_out,
-        AluB_out,
-        Alu_control,
-        ULA_out,
-        Overflow,
-        Ng,
-        Zr,
-        Eq,
-        Gt,
-        Lt,
-    );
 
     // muxes
 
