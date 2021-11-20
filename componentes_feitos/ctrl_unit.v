@@ -26,8 +26,6 @@ module ctrl_unit (
     output reg [1:0]    AluSrcA,
     output reg [1:0]    AluSrcB, 
     
-    //Controlador especial para instrução reset
-    output reg      rst_out,
     
     
     //Flags
@@ -92,11 +90,6 @@ reg[2:0] COUNTER;
     parameter  ADDI = 6'b001000 ;
     parameter  RESET = 6'b111111 ;
 
-
-initial begin
-  //reset inicial na maquina
-  rst_out = 1'b1;
-end
 
 always @(posedge clk) begin
         if (reset)begin

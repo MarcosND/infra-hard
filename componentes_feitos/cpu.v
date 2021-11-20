@@ -126,8 +126,7 @@ module cpu(
         RS,
         RT,
         WriteReg_in,
-        ULA_out,
-        mentoreg_out,
+        MEMtoReg_out,
         regA_out,
         regB_out,
     );
@@ -227,7 +226,6 @@ module cpu(
         M_writeReg,
         AluSrcA,
         AluSrcB,
-        reset,
         Overflow,
         Ng,
         Zr,
