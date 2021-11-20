@@ -1,5 +1,5 @@
 module mux_IorD (
-    input wire [2:0] IorD,
+    input wire [1:0] IorD,
     input wire [31:0] PC_out,
     input wire [31:0] Expction_out,
     input wire [31:0] ALU_out,

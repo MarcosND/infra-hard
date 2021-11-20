@@ -10,16 +10,16 @@ module cpu(
     wire PC_write;
     wire MEM_write;
     wire IR_write;
-    wire M_writeReg;
+    wire [1:0] M_writeReg;
     wire Regwrite;
-    wire AB_w;
-    wire AluSrcA; // falta colocar o tamanho de alguns desses sinais
-    wire AluSrcB;
+    wire AB_write;
+    wire  AluSrcA; // falta colocar o tamanho de alguns desses sinais
+    wire [1:0] AluSrcB;
     wire ALUOutCtrl;
     wire [2:0] Alu_control;
     wire [3:0] MEMtoReg;
-    wire [2:0] PCsource;
-    wire [2:0] IorD;
+    wire [1:0] PCsource;
+    wire [1:0] IorD;
     
 
     //Flags
@@ -52,7 +52,6 @@ module cpu(
     wire [31:0] AluA_out;
     wire [31:0] AluB_out;
     wire [31:0] Exception_out;
-    wire [31:0] result_out;
     wire [31:0] IorD_out;
     wire [31:0] Shiftleft_26to28_out;
     wire [31:0] EPC_out;
@@ -164,17 +163,18 @@ module cpu(
 
     mux_ulaB mux_ulaB_(
         AluSrcB,
-        PC_out,
         B_out,
+        SL2_out,
+        SE16_out,
         AluB_out
     );
 
     mux_IorD IorD_(
         IorD,
         PC_out,
-        Excp_out,
+        Exception_out,
         ALUOut_out,
-        result_out,
+        ULA_out,
         IorD_out
     );
 
@@ -182,7 +182,7 @@ module cpu(
         PCsource,
         Shiftleft_26to28_out,
         EPC_out,
-        result_out,
+        ULA_out,
         ALUOut_out,
         PCsource_out
     );
@@ -194,7 +194,7 @@ module cpu(
         HI_out,
         LO_out,
         SE1_32_out,
-        result_out,
+        ULA_out,
         SE16_out,
         ShiftReg_out,
         MEMtoReg_out
@@ -218,14 +218,14 @@ module cpu(
         PC_write,
         MEM_write,
         IR_write,
-        AB_w,
+        AB_write,
         Regwrite,
         ALUOutCtrl,
         Alu_control,
         MEMtoReg,
-        PCsource,
-        IorD,
         M_writeReg,
+        IorD,
+        PCsource,
         AluSrcA,
         AluSrcB,
         Overflow,
@@ -234,7 +234,8 @@ module cpu(
         Eq,
         Gt,
         Lt,
-        OPCODE
+        OPCODE,
+        OFFSET[5:0]
     );
 
 endmodule

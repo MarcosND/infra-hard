@@ -1,5 +1,5 @@
 module mux_PCsource (
-    input wire [2:0] PCsource, 
+    input wire [1:0] PCsource, 
     input wire [31:0] Shift_left_26to28_out,
     input wire [31:0] EPC_out,
     input wire [31:0] result,
@@ -10,13 +10,13 @@ module mux_PCsource (
 
 always @(*) begin
     case(PCsource)
-        3'b000:
+        2'b00:
             PCsource_out <= Shift_left_26to28_out;
-        3'b001:
+        2'b01:
             PCsource_out <= EPC_out;
-        3'b010:
+        2'b10:
             PCsource_out <= result;
-        3'b011:
+        2'b11:
             PCsource_out <= ALU_out;
         
 
