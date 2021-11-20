@@ -94,7 +94,7 @@ module cpu(
         Zr,
         Eq,
         Gt,
-        Lt,
+        Lt
     );
 
     Registrador B_(
@@ -110,7 +110,7 @@ module cpu(
         reset,
         ALUOutCtrl,
         ULA_out,
-        ALUOut_out,
+        ALUOut_out
     );
 
     Memoria MEM_(
@@ -118,7 +118,7 @@ module cpu(
         clock,
         MEM_write,
         SS_out,
-        MEM_out,
+        MEM_out
     );
 
     Instr_Reg IR_(
@@ -141,7 +141,7 @@ module cpu(
         WriteReg_in,
         MEMtoReg_out,
         regA_out,
-        regB_out,
+        regB_out
     );
 
 
@@ -158,14 +158,14 @@ module cpu(
         AluSrcA,
         PC_out,
         A_out,
-        AluA_out,
+        AluA_out
     );
 
     mux_ulaB mux_ulaB_(
         AluSrcB,
         PC_out,
         B_out,
-        AluB_out,
+        AluB_out
     );
 
     mux_IorD IorD_(
@@ -174,7 +174,7 @@ module cpu(
         Excp_out,
         ALUOut_out,
         result_out,
-        IorD_out,
+        IorD_out
     );
 
     mux_PCsource PcSource_(
@@ -196,7 +196,7 @@ module cpu(
         result_out,
         SE16_out,
         ShiftReg_out,
-        MEMtoReg_out,
+        MEMtoReg_out
     );
 
     // sign extends
@@ -208,7 +208,7 @@ module cpu(
 
     shift_left_2 SL2_(
         SE16_out,
-        SL2_out,
+        SL2_out
     );
 
     ctrl_unit CTRL_(
@@ -233,7 +233,7 @@ module cpu(
         Eq,
         Gt,
         Lt,
-        OPCODE,
+        OPCODE
     );
 
 endmodule
