@@ -1,10 +1,10 @@
 module mux_IorD (
-    input wire [2:0] IorD
+    input wire [2:0] IorD,
     input wire [31:0] PC_out,
     input wire [31:0] Expction_out,
     input wire [31:0] ALU_out,
     input wire [31:0] result,
-    output wire [31:0] IorD_out
+    output reg  [31:0] IorD_out
 );
 always @(*) begin
         case (IorD)

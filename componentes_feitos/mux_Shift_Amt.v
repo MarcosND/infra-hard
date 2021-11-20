@@ -3,7 +3,7 @@ module mux_Shift_Amt (
     input wire [31:0] Reg_B_info,
     input wire [15:0] Imediato,
     input wire [31:0] MDR_out,
-    output wire [4:0] Shift_Amt_out
+    output reg [4:0] Shift_Amt_out
 );
 always @(*) begin
         case (Shift_Amt)
