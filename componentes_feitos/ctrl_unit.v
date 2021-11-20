@@ -232,7 +232,7 @@ always @(posedge clk) begin
         IorD   [1:0]          = 2'b00; 
         
         
-        
+        STATE = ST_FETCH_1;
 
         end
 

@@ -13,7 +13,7 @@ module cpu(
     wire [1:0] M_writeReg;
     wire Regwrite;
     wire AB_write;
-    wire  AluSrcA; // falta colocar o tamanho de alguns desses sinais
+    wire  AluSrcA;
     wire [1:0] AluSrcB;
     wire ALUOutCtrl;
     wire [2:0] Alu_control;
