@@ -15,7 +15,7 @@ module ctrl_unit (
                     
     output reg      [2:0] Alu_control,
     output reg      [3:0] MEMtoReg, 
-    output reg      [2:0] PCsource ,
+    output reg      [2:0] PCsource,
     //output reg      [1:0] Exception,
     output reg      [2:0] IorD,
 
@@ -37,35 +37,7 @@ module ctrl_unit (
     input wire      Lt,
     
     //Fios de Dados
-   input wire [5:0] OPCODE,
-   input wire [4:0] RS,
-   input wire [4:0] RT,
-   input wire [15:0] OFFSET,
-   input wire [4:0] WriteReg_in,
-   input wire [31:0] ULA_out,
-   input wire [31:0] PC_out,
-   input wire [31:0] MEM_out,
-   input wire [31:0] regA_out,
-   input wire [31:0] regB_out,
-   input wire [31:0] B_out,
-   input wire [31:0] A_out,
-   input wire [31:0] SE16_out,
-   input wire [31:0] AluA_out,
-   input wire [31:0] AluB_out,
-   input wire [31:0] Shift_left_26to28_out,
-   input wire [31:0] EPC_out,
-   input wire [31:0] result,
-   input wire [31:0] PCsource_out,
-   input wire [31:0] LS_out,
-   input wire [31:0] HI_out,
-   input wire [31:0] LO_out,
-   input wire [31:0] Sign_extend_1to32_out,
-  // input wire [31:0] Shift_Left_16_out,
-   input wire [31:0] Shift_Reg_out,
-   input wire [31:0] MEMtoReg_out,
-   input wire [31:0] Excepction_out,
-   input wire [31:0] IorD_out,
-   input wire [31:0] ALUOut_out
+    input wire [5:0] OPCODE
 
 );   
 
@@ -90,9 +62,13 @@ reg[2:0] COUNTER;
     parameter  ADDI = 6'b001000 ;
     parameter  RESET = 6'b111111 ;
 
+initial begin
+    STATE = ST_RESET;
+end
+
 
 always @(posedge clk) begin
-        if (reset)begin
+        if (reset || STATE == ST_RESET)begin
           
        
 
@@ -114,11 +90,6 @@ always @(posedge clk) begin
         STATE = ST_FETCH_1;
          
         end
-
-        
-    
-
-    
     
     else begin
         case (STATE)
@@ -195,7 +166,7 @@ always @(posedge clk) begin
         ALUOutCtrl          = 1'b0;
         MEMtoReg [3:0]      = 4'b0000; 
         PCsource [2:0]      = 3'b010;
-        IorD   [2:0]        = 3'b00; 
+        IorD   [2:0]        = 3'b000; 
             
                 STATE = ST_ADD_2;
         end
