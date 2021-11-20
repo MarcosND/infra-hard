@@ -9,24 +9,22 @@ module ctrl_unit {
     output reg          PC_write,
     output reg          MEM_write,    
     output reg          IR_write,
-    output reg          RB_w,
     output reg          AB_w,
     output reg          Regwrite,
-    output reg [1:0]    AluSrcA,
-    output reg [1:0]    AluSrcB, 
+    output reg          ALUOutCtrl,
                     
     output reg      [2:0] Alu_control,
     output reg      [3:0] MEMtoReg, 
     output reg      [2:0] PCsource ,
-    output reg      [1:0] Exception,
+    //output reg      [1:0] Exception,
     output reg      [2:0] IorD,
 
     
     
     //controladores dos muxes
-    output reg      M_writeReg,
-    output reg     mux_ulaA,
-    output reg      M_ULAB,
+    output reg [2:0]         M_writeReg,
+    output reg [1:0]    AluSrcA,
+    output reg [1:0]    AluSrcB, 
     
     //Controlador especial para instrução reset
     output reg      rst_out,
@@ -56,29 +54,20 @@ module ctrl_unit {
    input wire [31:0] SE16_out,
    input wire [31:0] AluA_out,
    input wire [31:0] AluB_out,
-   input wire [2:0] PCsource,
    input wire [31:0] Shift_left_26to28_out,
    input wire [31:0] EPC_out,
    input wire [31:0] result,
-   input wire [31:0] ALU_out,
    input wire [31:0] PCsource_out,
    input wire [31:0] LS_out,
    input wire [31:0] HI_out,
    input wire [31:0] LO_out,
    input wire [31:0] Sign_extend_1to32_out,
-   input wire [31:0] Shift_Left_16_out,
+  // input wire [31:0] Shift_Left_16_out,
    input wire [31:0] Shift_Reg_out,
    input wire [31:0] MEMtoReg_out,
    input wire [31:0] Excepction_out,
-   input wire [31:0] Expction_out,
    input wire [31:0] IorD_out,
-    
-
-
-    
-
-    
-
+   input wire [31:0] ALUOut_out,
 
 };   
 
@@ -141,6 +130,7 @@ always @(posedge clk) begin
         case (STATE)
             ST_FETCH_1: begin
              //Define os sinais
+        M_writeReg          = 2'b00; 
         PC_write            = 1'b0; 
         MEM_write           = 1'b0;
         IR_write            = 1'b0;
@@ -149,7 +139,7 @@ always @(posedge clk) begin
         Regwrite            = 1'b0; // 
         AluSrcA             = 2'b00;
         AluSrcB             = 2'b01; // 
-        [2:0] Alu_control   = 2'b0;
+        [2:0] Alu_control   = 3'b001; //
         [3:0] MEMtoReg      = 4'b0000; //
         [2:0] PCsource      = 2'b0;
         [1:0] Exception     = 1'b0;
@@ -185,11 +175,12 @@ always @(posedge clk) begin
         MEM_write           = 1'b0;
         IR_write            = 1'b1; //
         RB_w                = 1'b0;
-        AB_w                = 1'b0;
+        AB_w                = 1'b1; //
         Regwrite            = 1'b0; 
         [1:0]AluSrcA        = 2'b00; //
         [1:0]AluSrcB        = 2'b10; //
-        [2:0] Alu_control   = 2'b01;
+        [2:0] Alu_control   = 3'b001; //
+        ALUOutCtrl          = 1'b1; //
         [3:0] MEMtoReg      = 4'b0000; 
         [2:0] PCsource      = 2'b10;
         [1:0] Exception     = 1'b0;
@@ -208,7 +199,7 @@ always @(posedge clk) begin
         Regwrite            = 1'b0; 
         [1:0]AluSrcA        = 2'b01; //
         [1:0]AluSrcB        = 2'b00; //
-        [2:0] Alu_control   = 2'b01;
+        [2:0] Alu_control   = 3'b001;
         [3:0] MEMtoReg      = 4'b0000; 
         [2:0] PCsource      = 2'b10;
         [1:0] Exception     = 1'b0;
@@ -228,6 +219,7 @@ always @(posedge clk) begin
         [1:0]AluSrcB        = 2'b00; 
         [2:0] Alu_control   = 2'b01;
         [3:0] MEMtoReg      = 4'b0010; //
+        M_writeReg          = 2'b01; //
         [2:0] PCsource      = 2'b10;
         [1:0] Exception     = 1'b0;
         [2:0] IorD          = 2'b0; 
@@ -244,9 +236,9 @@ always @(posedge clk) begin
         RB_w                = 1'b0;
         AB_w                = 1'b0;
         Regwrite            = 1'b0; 
-        [1:0]AluSrcA        = 2'b01; 
+        [1:0]AluSrcA        = 2'b00; 
         [1:0]AluSrcB        = 2'b00; 
-        [2:0] Alu_control   = 2'b01;
+        [2:0] Alu_control   = 3'b00;
         [3:0] MEMtoReg      = 4'b0000; 
         [2:0] PCsource      = 2'b00;
         [1:0] Exception     = 1'b0;

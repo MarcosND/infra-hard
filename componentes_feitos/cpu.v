@@ -15,6 +15,7 @@ module cpu(
     wire AB_w;
     wire AluSrcA; // falta colocar o tamanho de alguns desses sinais
     wire AluSrcB;
+    wire ALUOutCtrl;
     wire [2:0] Alu_control;
     wire [3:0] MEMtoReg;
     wire [2:0] PCsource;
@@ -40,6 +41,7 @@ module cpu(
 
 
     wire [31:0] ULA_out;
+    wire [31:0] ALUOut_out;
     wire [31:0] PC_out;
     wire [31:0] MEM_out;
     wire [31:0] regA_out;
@@ -88,6 +90,14 @@ module cpu(
         AB_write,
         regB_out,
         B_out
+    );
+
+    Registrador ALUOut_(
+        clock,
+        reset,
+        ALUOutCtrl,
+        ULA_out,
+        ALUOut_out,
     );
 
     Memoria MEM_(
@@ -162,8 +172,7 @@ module cpu(
         IorD,
         PC_out,
         Excp_out,
-        ULA_out,
-        A_out,
+        ALUOut_out,
         result_out,
         IorD_out,
     );
@@ -173,13 +182,13 @@ module cpu(
         Shiftleft_26to28_out,
         EPC_out,
         result_out,
-        ALU_out,
+        ALUOut_out,
         PCsource_out
     );
 
     mux_MEMtoReg MEMtoReg_(
         MEMtoReg,
-        ULA_out,
+        ALUOut_out,
         LS_out,
         HI_out,
         LO_out,
@@ -205,6 +214,20 @@ module cpu(
     ctrl_unit CTRL_(
         clock,
         reset,
+        PC_write,
+        MEM_write,
+        IR_write,
+        AB_w,
+        Regwrite,
+        ALUOutCtrl,
+        Alu_control,
+        MEMtoReg,
+        PCsource,
+        IorD,
+        M_writeReg,
+        AluSrcA,
+        AluSrcB,
+        reset,
         Overflow,
         Ng,
         Zr,
@@ -212,16 +235,32 @@ module cpu(
         Gt,
         Lt,
         OPCODE,
-        PC_write,
-        MEM_write,
-        IR_write,
-        M_writeReg,
-        Regwrite,
-        AB_w,
-        AluSrcA,
-        AluSrcB,
-        Alu_control,
-        reset
+        RS,
+        RT,
+        OFFSET,
+        WriteReg_in,
+        ULA_out,
+        PC_out,
+        MEM_out,
+        regA_out,
+        regB_out,
+        B_out,
+        A_out,
+        SE16_out,
+        AluA_out,
+        AluB_out,
+        Shiftleft_26to28_out,
+        EPC_out,
+        result_out,
+        PCsource_out,
+        LS_out,
+        HI_out,
+        LO_out,
+        SE1_32_out,
+        ShiftReg_out,
+        MEMtoReg_out,
+        IorD_out,
+        Exception_out,
     );
 
 endmodule
