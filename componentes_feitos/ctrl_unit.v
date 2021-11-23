@@ -72,19 +72,19 @@ always @(posedge clk) begin
        
 
         //Define os sinais, zerando eles
-        M_writeReg[1:0]     = 2'b10; 
+        M_writeReg          = 2'b10; 
         PC_write            = 1'b0;
         MEM_write           = 1'b0;
         IR_write            = 1'b0;
         AB_w                = 1'b0;
         Regwrite            = 1'b1;
-        AluSrcA        = 1'b0;
-        AluSrcB [1:0]       = 2'b00;
-        Alu_control [2:0]    = 3'b000;
+        AluSrcA             = 1'b0;
+        AluSrcB             = 2'b00;
+        Alu_control         = 3'b000;
         ALUOutCtrl          = 1'b0;
-        MEMtoReg [3:0]     = 4'b1000;
-        PCsource [1:0]     = 2'b00;
-        IorD   [1:0]        = 2'b00;
+        MEMtoReg            = 4'b1000;
+        PCsource            = 2'b00;
+        IorD                = 2'b00;
         
         STATE = ST_FETCH_1;
          
@@ -94,19 +94,19 @@ always @(posedge clk) begin
         case (STATE)
             ST_FETCH_1: begin
              //Define os sinais
-        M_writeReg[1:0]     = 2'b00; 
+        M_writeReg          = 2'b00; 
         PC_write            = 1'b0; 
         MEM_write           = 1'b0;
         IR_write            = 1'b0;
         AB_w                = 1'b0;
         Regwrite            = 1'b0; // 
-        AluSrcA       = 1'b0;
-        AluSrcB [1:0]       = 2'b01; // 
-        Alu_control [2:0]   = 3'b001; //
+        AluSrcA             = 1'b0;
+        AluSrcB             = 2'b01; // 
+        Alu_control         = 3'b001; //
         ALUOutCtrl          = 1'b0;
-        MEMtoReg [3:0]    = 4'b0000; //
-        PCsource [1:0]    = 2'b00;
-        IorD   [1:0]     = 2'b00;   
+        MEMtoReg            = 4'b0000; //
+        PCsource            = 2'b00;
+        IorD                = 2'b00;   
                 
         STATE = ST_FETCH_2;   
             
@@ -115,56 +115,56 @@ always @(posedge clk) begin
         ST_FETCH_2: begin
            
               //Define os sinais
-        M_writeReg[1:0]     = 2'b00;
+        M_writeReg          = 2'b00;
         PC_write            = 1'b1; // 
         MEM_write           = 1'b0;
         IR_write            = 1'b1; //
         AB_w                = 1'b0;
         Regwrite            = 1'b0; 
-        AluSrcA        = 1'b0;
-        AluSrcB [1:0]       = 2'b01; 
-        Alu_control [2:0]   = 3'b001;
+        AluSrcA             = 1'b0;
+        AluSrcB             = 2'b01; 
+        Alu_control         = 3'b001;
         ALUOutCtrl          = 1'b0;
-        MEMtoReg [3:0]      = 4'b0000; 
-        PCsource [1:0]      = 2'b10; //
-        IorD   [1:0]        = 2'b00; 
+        MEMtoReg            = 4'b0000; 
+        PCsource            = 2'b10; //
+        IorD                = 2'b00; 
         
         STATE = ST_DECODE;
         
         end
             ST_DECODE: begin
              //Define os sinais
-        M_writeReg[1:0]     = 2'b00;
+        M_writeReg          = 2'b00;
         PC_write            = 1'b0;  //
         MEM_write           = 1'b0;
         IR_write            = 1'b0; //
         AB_w                = 1'b1; //
         Regwrite            = 1'b0; 
-        AluSrcA       = 1'b0; //
-        AluSrcB [1:0]       = 2'b10; //
-        Alu_control [2:0]   = 3'b001; //
+        AluSrcA             = 1'b0; //
+        AluSrcB             = 2'b10; //
+        Alu_control         = 3'b001; //
         ALUOutCtrl          = 1'b1; //
-        MEMtoReg [3:0]      = 4'b0000; 
-        PCsource [1:0]      = 2'b00; //
-        IorD   [1:0]        = 2'b00; 
+        MEMtoReg            = 4'b0000; 
+        PCsource            = 2'b00; //
+        IorD                = 2'b00; 
 
         STATE = ST_DECODE_2;
             end
         ST_DECODE_2: begin
              //Define os sinais
-        M_writeReg[1:0]     = 2'b00;
+        M_writeReg          = 2'b00;
         PC_write            = 1'b0;  
         MEM_write           = 1'b0;
         IR_write            = 1'b0; 
         AB_w                = 1'b1; 
         Regwrite            = 1'b0; 
-        AluSrcA       = 1'b0; //
-        AluSrcB [1:0]       = 2'b10; //
-        Alu_control [2:0]   = 3'b001; 
+        AluSrcA             = 1'b0; //
+        AluSrcB             = 2'b10; //
+        Alu_control         = 3'b001; 
         ALUOutCtrl          = 1'b0; //
-        MEMtoReg [3:0]      = 4'b0000; 
-        PCsource [1:0]      = 2'b00; 
-        IorD   [1:0]        = 2'b00; 
+        MEMtoReg            = 4'b0000; 
+        PCsource            = 2'b00; 
+        IorD                = 2'b00; 
             
         case (OPCODE)
             R: begin
@@ -179,37 +179,37 @@ always @(posedge clk) begin
         end
             ST_ADD_1: begin
              //Define os sinais
-        M_writeReg[1:0]     = 2'b00;
+        M_writeReg          = 2'b00;
         PC_write            = 1'b0;  
         MEM_write           = 1'b0;
         IR_write            = 1'b0; 
         AB_w                = 1'b0;
         Regwrite            = 1'b0; 
-        AluSrcA            = 1'b1; //
-        AluSrcB [1:0]            = 2'b00; //
-        Alu_control [2:0]   = 3'b001;
+        AluSrcA             = 1'b1; //
+        AluSrcB             = 2'b00; //
+        Alu_control         = 3'b001;
         ALUOutCtrl          = 1'b1;
-        MEMtoReg [3:0]      = 4'b0000; 
-        PCsource [1:0]      = 2'b00;
-        IorD   [1:0]        = 2'b00; 
+        MEMtoReg            = 4'b0000; 
+        PCsource            = 2'b00;
+        IorD                = 2'b00; 
             
                 STATE = ST_ADD_2;
         end
             ST_ADD_2: begin
               //Define os sinais
-        M_writeReg[1:0]     = 2'b01; //
+        M_writeReg    = 2'b01; //
         PC_write            = 1'b0;  
         MEM_write           = 1'b0;
         IR_write            = 1'b0; 
         AB_w                = 1'b0;
         Regwrite            = 1'b1; //
         AluSrcA             = 1'b0; //
-        AluSrcB [1:0]       = 2'b00; 
-        Alu_control [2:0]   = 3'b000;
+        AluSrcB             = 2'b00; 
+        Alu_control         = 3'b000;
         ALUOutCtrl          = 1'b0;
-        MEMtoReg [3:0]      = 4'b0101; //
-        PCsource [1:0]      = 2'b00;
-        IorD   [1:0]        = 2'b00; 
+        MEMtoReg            = 4'b0101; //
+        PCsource            = 2'b00;
+        IorD                = 2'b00; 
         
 
         STATE = ST_CLOSE_WRITE;
@@ -217,19 +217,19 @@ always @(posedge clk) begin
             end
         ST_CLOSE_WRITE: begin
                //Define os sinais, vai zerar tudo
-        M_writeReg[1:0]     = 2'b00;
+        M_writeReg    = 2'b00;
         PC_write            = 1'b0;  
         MEM_write           = 1'b0;
         IR_write            = 1'b0; 
         AB_w                = 1'b0;
         Regwrite            = 1'b0; 
-        AluSrcA        = 1'b0; 
-        AluSrcB [1:0]         = 2'b00; 
-        Alu_control [2:0]   = 3'b000;
-        ALUOutCtrl            = 1'b0;
-        MEMtoReg [3:0]        = 4'b0000; 
-        PCsource [1:0]        = 2'b00;
-        IorD   [1:0]          = 2'b00; 
+        AluSrcA             = 1'b0; 
+        AluSrcB             = 2'b00; 
+        Alu_control         = 3'b000;
+        ALUOutCtrl          = 1'b0;
+        MEMtoReg            = 4'b0000; 
+        PCsource            = 2'b00;
+        IorD                = 2'b00; 
         
         
         STATE = ST_FETCH_1;

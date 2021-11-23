@@ -65,6 +65,7 @@ module cpu(
     wire [31:0] ShiftReg_out;
     wire [31:0] MEMtoReg_out;
 
+// lembrar de quando rodar o modelsim, antes do ciclo inical setar o reset para 1, e no proximo colocar pra 0.
 
     // registradores
 
