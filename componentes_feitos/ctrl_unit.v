@@ -43,27 +43,31 @@ module ctrl_unit (
 
 //variaveis usadas
 
-reg[2:0] STATE;
-reg[2:0] COUNTER;
+reg[5:0] STATE;
 
 // Parametros (Constantes)
 
     //Estados principais da maquina
-    parameter ST_RESET = 3'b000 ;    
-    parameter ST_FETCH_1 = 3'b001 ;
-    parameter ST_FETCH_2 = 3'b010 ;
-    parameter ST_DECODE = 3'b011;
-    parameter ST_DECODE_2 = 3'b100;
-    parameter ST_ADD_1 = 3'b101;
-    parameter ST_ADD_2 = 3'b110;
-    parameter ST_CLOSE_WRITE = 3'b111;
+    parameter ST_RESET = 6'b000000;    
+    parameter ST_FETCH_1 = 6'b000001;
+    parameter ST_FETCH_2 = 6'b000010;
+    parameter ST_DECODE = 6'b000011;
+    parameter ST_DECODE_2 = 6'b000100;
+    parameter ST_ADD_1 = 6'b000101;
+    parameter ST_SUB = 6'b000110;
+    parameter ST_AND = 6'b000111;
+    parameter ST_CLOSE_ARITH = 6'b001000;
+    parameter ST_CLOSE_WRITE = 6'b111111;
 
-    //Opcode codes as aliases
-    parameter R = 6'b000000;
-    parameter  ADD = 6'b000000;
-    parameter  ADDI = 6'b001000;
+    //Opcode
+    parameter   R = 6'b000000;
+    parameter   ADD = 6'b000000;
+    parameter   ADDI = 6'b001000;
 
+    // Function
     parameter FUNCT_ADD = 6'b100000;
+    parameter FUNCT_SUB = 6'b100010;
+    parameter FUNCT_AND = 6'b100100;
 
 
 always @(posedge clk) begin
@@ -172,6 +176,12 @@ always @(posedge clk) begin
                 FUNCT_ADD: begin
                   STATE = ST_ADD_1;
                 end
+                FUNCT_SUB: begin
+                  STATE = ST_SUB;
+                end
+                FUNCT_AND: begin
+                  STATE = ST_AND;
+                end
               endcase
             end
         endcase
@@ -188,16 +198,51 @@ always @(posedge clk) begin
         AluSrcA             = 1'b1; //
         AluSrcB             = 2'b00; //
         Alu_control         = 3'b001;
-        ALUOutCtrl          = 1'b1;
+        ALUOutCtrl          = 1'b1; // 
         MEMtoReg            = 4'b0000; 
         PCsource            = 2'b00;
         IorD                = 2'b00; 
             
-                STATE = ST_ADD_2;
+                STATE = ST_CLOSE_ARITH;
         end
-            ST_ADD_2: begin
+
+            ST_SUB: begin
+        M_writeReg          = 2'b00;
+        PC_write            = 1'b0;  
+        MEM_write           = 1'b0;
+        IR_write            = 1'b0; 
+        AB_w                = 1'b0;
+        Regwrite            = 1'b0; 
+        AluSrcA             = 1'b1; //
+        AluSrcB             = 2'b00; //
+        Alu_control         = 3'b010; //
+        ALUOutCtrl          = 1'b1; //
+        MEMtoReg            = 4'b0000; 
+        PCsource            = 2'b00;
+        IorD                = 2'b00; 
+            
+                STATE = ST_CLOSE_ARITH;
+        end
+            ST_AND: begin
+        M_writeReg          = 2'b00;
+        PC_write            = 1'b0;  
+        MEM_write           = 1'b0;
+        IR_write            = 1'b0; 
+        AB_w                = 1'b0;
+        Regwrite            = 1'b0; 
+        AluSrcA             = 1'b1; //
+        AluSrcB             = 2'b00; //
+        Alu_control         = 3'b011; //
+        ALUOutCtrl          = 1'b1; //
+        MEMtoReg            = 4'b0000; 
+        PCsource            = 2'b00;
+        IorD                = 2'b00; 
+            
+                STATE = ST_CLOSE_ARITH;
+        end
+            ST_CLOSE_ARITH: begin
               //Define os sinais
-        M_writeReg    = 2'b01; //
+        M_writeReg          = 2'b01; //
         PC_write            = 1'b0;  
         MEM_write           = 1'b0;
         IR_write            = 1'b0; 
@@ -205,7 +250,7 @@ always @(posedge clk) begin
         Regwrite            = 1'b1; //
         AluSrcA             = 1'b0; //
         AluSrcB             = 2'b00; 
-        Alu_control         = 3'b000;
+        Alu_control         = 3'b000; //
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0101; //
         PCsource            = 2'b00;
@@ -217,7 +262,7 @@ always @(posedge clk) begin
             end
         ST_CLOSE_WRITE: begin
                //Define os sinais, vai zerar tudo
-        M_writeReg    = 2'b00;
+        M_writeReg          = 2'b00;
         PC_write            = 1'b0;  
         MEM_write           = 1'b0;
         IR_write            = 1'b0; 
@@ -236,20 +281,6 @@ always @(posedge clk) begin
 
         end
 
-
-
-            
-            
-            
-            
-            
-            
-            
-            
-                
-
-
-            
 
         endcase     
     
