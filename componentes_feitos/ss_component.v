@@ -12,13 +12,13 @@ module ss_component(
 
     always @(*)
         begin
-            if(controleSS = primeiro_caso) begin
+            if(controleSS == primeiro_caso) begin
                 ss_out = b_out;
             end
-            if(controleSS = segundo_caso) begin
+            if(controleSS == segundo_caso) begin
                 ss_out = {dataRegOut[31:8], b_out[7:0]};
             end
-            if(controleSS = terceiro_caso) begin
+            if(controleSS == terceiro_caso) begin
                 ss_out = {dataRegOut[31:16], b_out[15:0]};
             end
         end
