@@ -154,8 +154,8 @@ module cpu(
         MDR_out,
         b_out,
         SS_out
-
     );
+
     Instr_Reg IR_(
         clock,
         reset,
