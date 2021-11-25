@@ -66,6 +66,7 @@ module cpu(
     wire [31:0] HI_out;
     wire [31:0] LO_out;
     wire [31:0] SE1_32_out;
+
     wire [31:0] MDR_out;
     wire [31:0] MEMtoReg_out;
     wire [31:0] ShiftSrc_out;
@@ -236,6 +237,11 @@ module cpu(
     sign_extend_16 SE16_(
         OFFSET,
         SE16_out
+    );
+
+    sign_extend_1to32 SE1_(
+        Lt,
+        SE1_32_out
     );
 
     shift_left_2 SL2_(
