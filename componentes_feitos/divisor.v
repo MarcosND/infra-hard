@@ -47,7 +47,7 @@ always @(posedge clock) begin
         sinal = 1;
       end
     end
-    else if(final == 0) begin
+    else if(finalizado == 0) begin
       for (index = 1; dividendo >= divisor; index= index + 1) begin
       dividendo = dividendo - divisor;
       lo = index;
@@ -56,6 +56,7 @@ always @(posedge clock) begin
          lo = ~lo + 1;
        end
        hi = dividendo;
-       final = 1;
+       finalizado = 1;
+end
 end
 endmodule
