@@ -8,11 +8,11 @@ module mux_Shift_Amt (
 always @(*) begin
         case (Shift_Amt)
             2'b00:
-                Shift_Amt_out <= Reg_B_info;
+                Shift_Amt_out <= Reg_B_info[4:0];
             2'b01:
-                Shift_Amt_out <= Imediato;
+                Shift_Amt_out <= Imediato[10:6];
             2'b10:
-                Shift_Amt_out <= MDR_out;
+                Shift_Amt_out <= MDR_out; // provavelmente esta errado aq
         endcase
 end    
 endmodule

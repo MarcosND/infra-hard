@@ -13,13 +13,16 @@ module cpu(
     wire [1:0] M_writeReg;
     wire Regwrite;
     wire AB_write;
-    wire  AluSrcA;
+    wire AluSrcA;
     wire [1:0] AluSrcB;
     wire ALUOutCtrl;
     wire [2:0] Alu_control;
     wire [3:0] MEMtoReg;
     wire [1:0] PCsource;
     wire [1:0] IorD;
+    wire [2:0] ShiftControl;
+    wire [1:0] ShiftAmt;
+    wire ShiftSrc;
     
 
     //Flags
@@ -38,6 +41,7 @@ module cpu(
     wire [4:0] RT;
     wire [15:0] OFFSET;
     wire [4:0] WriteReg_in;
+    wire [4:0] ShiftAmt_out;
 
 
     wire [31:0] ULA_out;
@@ -62,8 +66,10 @@ module cpu(
     wire [31:0] HI_out;
     wire [31:0] LO_out;
     wire [31:0] SE1_32_out;
-    wire [31:0] ShiftReg_out;
+    wire [31:0] MDR_out;
     wire [31:0] MEMtoReg_out;
+    wire [31:0] ShiftSrc_out;
+    wire [31:0] ShiftReg_out;
 
 // lembrar de quando rodar o modelsim, antes do ciclo inical setar o reset para 1, e no proximo colocar pra 0.
 
@@ -145,6 +151,15 @@ module cpu(
         regB_out
     );
 
+    RegDesloc Shift_reg_(
+        clock,
+        reset,
+        ShiftControl,
+        ShiftAmt_out,
+        ShiftSrc_out,
+        ShiftReg_out
+    );
+
 
     // muxes
 
@@ -188,6 +203,21 @@ module cpu(
         PCsource_out
     );
 
+    mux_Shift_Amt ShiftAmt_(
+        ShiftAmt,
+        B_out,
+        OFFSET,
+        MDR_out,
+        ShiftAmt_out
+    );
+
+    mux_Shift_Src ShiftSrc_(
+        ShiftSrc,
+        A_out,
+        B_out,
+        ShiftSrc_out
+    );
+
     mux_MEMtoReg MEMtoReg_(
         MEMtoReg,
         ALUOut_out,
@@ -223,10 +253,13 @@ module cpu(
         Regwrite,
         ALUOutCtrl,
         Alu_control,
+        ShiftControl,
         MEMtoReg,
         M_writeReg,
         IorD,
         PCsource,
+        ShiftAmt,
+        ShiftSrc,
         AluSrcA,
         AluSrcB,
         Overflow,
