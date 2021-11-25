@@ -1,0 +1,11 @@
+intrucoes.mif
+teste.cr.mti
+teste.mpf
+transcript
+vsim.wlf
+/work
+
+*.mif
+*.mti
+*.mtf
+.*wlf
