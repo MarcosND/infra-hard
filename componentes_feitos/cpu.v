@@ -17,10 +17,12 @@ module cpu(
     wire AluSrcA;
     wire [1:0] AluSrcB;
     wire ALUOutCtrl;
+    wire MDR_Write;
     wire [2:0] Alu_control;
     wire [3:0] MEMtoReg;
     wire [1:0] PCsource;
     wire [1:0] IorD;
+    wire [1:0] controleSS;
     wire [2:0] ShiftControl;
     wire [1:0] ShiftAmt;
     wire ShiftSrc;
@@ -131,6 +133,14 @@ module cpu(
         EPC_out
     );
 
+    Registrador MDR(
+        clock,
+        reset,
+        MDR_Write,
+        MEM_out,
+        MDR_out
+    );
+
     Memoria MEM_(
         PC_out,
         clock,
@@ -139,6 +149,13 @@ module cpu(
         MEM_out
     );
 
+    ss_component SS_(
+        controleSS,
+        MDR_out,
+        b_out,
+        SS_out
+
+    );
     Instr_Reg IR_(
         clock,
         reset,
@@ -270,9 +287,11 @@ module cpu(
         Regwrite,
         ALUOutCtrl,
         Alu_control,
+        MDR_Write,
         ShiftControl,
         MEMtoReg,
         M_writeReg,
+        controleSS,
         IorD,
         PCsource,
         ShiftAmt,
