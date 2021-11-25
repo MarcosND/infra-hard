@@ -72,12 +72,34 @@ reg[5:0] STATE;
     parameter ST_SHIFT_END_1 = 6'b001101;
     parameter ST_SLT = 6'b010001;
     parameter ST_RTE = 6'b010010;
+    parameter ST_ADDI_ADDIU = 6'b010011;
+    parameter ST_ADDI = 6'b010100; 
+    parameter ST_ADDIU = 6'b010101;
+    parameter ST_BRANCH_START = 6'b010110;
+    parameter ST_BRANCH_END = 6'b010111;
     parameter ST_CLOSE_WRITE = 6'b111111;
+    
+    
+    
 
     //Opcode
-    parameter   R = 6'b000000;
-    parameter   ADD = 6'b000000;
-    parameter   ADDI = 6'b001000;
+    parameter R     = 6'b000000;
+    parameter ADDI  = 6'b001000;
+    parameter ADDIU = 6'b001001;
+    parameter BEQ   = 6'b000100;
+    parameter BNE   = 6'b000101;
+    parameter BLE   = 6'b000110;
+    parameter BGT   = 6'b000111;
+    parameter LB    = 6'b100000;
+    parameter LH    = 6'b100001;
+    parameter LUI   = 6'b001111;
+    parameter LW    = 6'b100011;
+    parameter SB    = 6'b101000;
+    parameter SH    = 6'b101001;
+    parameter SLTI  = 6'b001010;
+    parameter SW    = 6'b101011;
+    parameter J     = 6'b000010;
+    parameter JAL   = 6'b000011;
 
     // Function
     parameter FUNCT_ADD = 6'b100000;
@@ -206,6 +228,7 @@ always @(posedge clk) begin
         MEMtoReg            = 4'b0000; 
         PCsource            = 2'b00; 
         IorD                = 2'b00; 
+        
             
         case (OPCODE)
             R: begin
@@ -239,12 +262,35 @@ always @(posedge clk) begin
                 end
                 FUNCT_RTE: begin
                   STATE = ST_RTE;
-
-
                 end
               endcase
             end
-        endcase
+
+            BEQ: begin
+              STATE = ST_BRANCH_START;
+            end
+
+            BNE: begin
+              STATE = ST_BRANCH_START;
+            end
+
+            BGT: begin
+              STATE = ST_BRANCH_START;
+            end
+
+            BLE: begin
+              STATE = ST_BRANCH_START;
+            end
+
+            ADDI: begin
+              STATE = ST_ADDI_ADDIU;
+            end
+
+            ADDIU: begin
+              STATE = ST_ADDI_ADDIU;            
+            end         
+               
+          endcase
             
         end
             ST_ADD_1: begin
@@ -586,16 +632,174 @@ always @(posedge clk) begin
 
 
         end
+      
+        ST_ADDI_ADDIU: begin
+
+        ShiftAmt            = 2'b00; 
+        ShiftControl        = 3'b000; 
+        ShiftSrc            = 1'b0;
+        M_writeReg          = 2'b00;
+        PC_write            = 1'b0;
+        EPC_Write           = 1'b0;  
+        MEM_write           = 1'b0;
+        IR_write            = 1'b0; 
+        AB_w                = 1'b0;
+        Regwrite            = 1'b0; 
+        AluSrcA             = 1'b1; 
+        AluSrcB             = 2'b11; //
+        Alu_control         = 3'b001;
+        ALUOutCtrl          = 1'b1;  // NÃO SABEMOS SE É PRA MUDAR OU NÃO, CONSULTAR MARCOS
+        MEMtoReg            = 4'b0000; 
+        PCsource            = 2'b00;
+        IorD                = 2'b00; 
+
+        if (OPCODE == ADDI) begin  // Faz a verificação pra saber qual caso ir depois da mudança de estado padrão
+          STATE = ST_ADDI;
+        end 
+        else begin
+          STATE = ST_ADDIU;
+        end
         
+      end
+
+        ST_ADDI: begin
         
+        ShiftAmt            = 2'b00; 
+        ShiftControl        = 3'b000; 
+        ShiftSrc            = 1'b0;
+        M_writeReg          = 2'b00; //
+        PC_write            = 1'b0;  
+        EPC_Write           = 1'b0;
+        MEM_write           = 1'b0;
+        IR_write            = 1'b0; 
+        AB_w                = 1'b0;
+        Regwrite            = 1'b1; 
+        AluSrcA             = 1'b1; 
+        AluSrcB             = 2'b10; 
+        Alu_control         = 3'b000;
+        ALUOutCtrl          = 1'b0;
+        MEMtoReg            = 4'b0010; 
+        PCsource            = 2'b00;
+        IorD                = 2'b00; 
+
+        STATE = ST_CLOSE_WRITE;  
+
+
+        end
+
+        ST_ADDIU: begin
         
+        ShiftAmt            = 2'b00; 
+        ShiftControl        = 3'b000; 
+        ShiftSrc            = 1'b0;
+        M_writeReg          = 2'b00; //
+        PC_write            = 1'b0;  
+        EPC_Write           = 1'b0;
+        MEM_write           = 1'b0;
+        IR_write            = 1'b0; 
+        AB_w                = 1'b0;
+        Regwrite            = 1'b1; 
+        AluSrcA             = 1'b1; 
+        AluSrcB             = 2'b10; 
+        Alu_control         = 3'b000;
+        ALUOutCtrl          = 1'b0;
+        MEMtoReg            = 4'b0010; 
+        PCsource            = 2'b00;
+        IorD                = 2'b00; 
+
+        STATE = ST_CLOSE_WRITE;
+          
+
+
+        end 
+            
+        
+        ST_BRANCH_START: begin
+        ShiftAmt            = 2'b00; 
+        ShiftControl        = 3'b000; 
+        ShiftSrc            = 1'b0;
+        PC_write            = 1'b0;
+        M_writeReg          = 2'b00;
+        EPC_Write           = 1'b0;  
+        MEM_write           = 1'b0;
+        IR_write            = 1'b0; 
+        AB_w                = 1'b0;
+        Regwrite            = 1'b0; 
+        AluSrcA             = 1'b1; //
+        AluSrcB             = 2'b00; 
+        Alu_control         = 3'b111; //
+        ALUOutCtrl          = 1'b0;
+        MEMtoReg            = 4'b0000; 
+        PCsource            = 2'b11; //
+        IorD                = 2'b00; 
+        
+
+        STATE = ST_BRANCH_END;
+
+        end
+
+        ST_BRANCH_END: begin
+        ShiftAmt            = 2'b00; 
+        ShiftControl        = 3'b000; 
+        ShiftSrc            = 1'b0;
+        M_writeReg          = 2'b00;
+        EPC_Write           = 1'b0;  
+        MEM_write           = 1'b0;
+        IR_write            = 1'b0; 
+        AB_w                = 1'b0;
+        Regwrite            = 1'b0; 
+        AluSrcA             = 1'b1; //
+        AluSrcB             = 2'b00; 
+        Alu_control         = 3'b111; //
+        ALUOutCtrl          = 1'b0;
+        MEMtoReg            = 4'b0000; 
+        PCsource            = 2'b11; //
+        IorD                = 2'b00; 
+        
+        case (OPCODE)
+          BEQ: begin
+            if (Eq == 1) begin
+            PC_write            = 1'b1;
+            end else begin
+            PC_write            = 1'b0;
+            end
+          end
+          BNE: begin
+            if (Eq == 0) begin
+            PC_write            = 1'b1;
+            end else begin
+            PC_write            = 1'b0;
+            end
+          end
+          BGT: begin
+            if (Gt == 1) begin
+            PC_write            = 1'b1;
+            end else begin
+            PC_write            = 1'b0;
+            end
+          end
+          BLE: begin
+          if (Gt == 0) begin
+            PC_write            = 1'b1;
+            end else begin
+            PC_write            = 1'b0;
+            end
+          end
+        endcase
+
+
+        STATE = ST_CLOSE_WRITE;
+
+        end
+
+
         ST_CLOSE_WRITE: begin
-               //Define os sinais, vai zerar tudo
         ShiftAmt            = 2'b00; 
         ShiftControl        = 3'b000; 
         ShiftSrc            = 1'b0;
         M_writeReg          = 2'b00;
         PC_write            = 1'b0;  
+        EPC_Write           = 1'b0;
         MEM_write           = 1'b0;
         IR_write            = 1'b0; 
         AB_w                = 1'b0;
