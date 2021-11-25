@@ -83,7 +83,7 @@ module cpu(
         clock,
         reset,
         PC_write,
-        ULA_out,
+        PCsource_out,
         PC_out
     );
 
