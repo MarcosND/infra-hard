@@ -1,0 +1,738 @@
+m255
+K4
+z2
+!s11f MIXED_VERSIONS
+!s11e vcom 2020.1 2020.02, Feb 28 2020
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dD:/Quartus
+Ebanco_reg
+Z0 w1637804713
+Z1 DPx4 ieee 11 numeric_std 0 22 aU^R8eGcicLcUFIaBQSL>3
+Z2 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z3 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
+!i122 24
+Z4 dC:/Users/tata-/Desktop/infra-hard
+Z5 8C:/Users/tata-/Desktop/infra-hard/componentes_dados/Banco_reg.vhd
+Z6 FC:/Users/tata-/Desktop/infra-hard/componentes_dados/Banco_reg.vhd
+l0
+L69 1
+V:adHbk0Ym0TAKYW83J5Y[3
+!s100 hZ46CT_BzQl8j]02_Vf=o2
+Z7 OV;C;2020.1;71
+32
+Z8 !s110 1637805158
+!i10b 1
+Z9 !s108 1637805158.000000
+Z10 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/tata-/Desktop/infra-hard/componentes_dados/Banco_reg.vhd|
+Z11 !s107 C:/Users/tata-/Desktop/infra-hard/componentes_dados/Banco_reg.vhd|
+!i113 1
+Z12 o-work work -2002 -explicit
+Z13 tExplicit 1 CvgOpt 0
+Abehavioral_arch
+R1
+R2
+R3
+DEx4 work 9 banco_reg 0 22 :adHbk0Ym0TAKYW83J5Y[3
+!i122 24
+l93
+L85 34
+VY7l=BkTbhRVIWWGL4mMo60
+!s100 RmVnX=Z0eZ>VP`R`^LJ]Q1
+R7
+32
+R8
+!i10b 1
+R9
+R10
+R11
+!i113 1
+R12
+R13
+vcpu
+Z14 !s110 1637805159
+!i10b 1
+!s100 ei6K4bB:4e]5??[OgNjAB2
+Z15 !s11b Dg1SIo80bB@j0V0VzS_@n1
+I@F]<K@^V;?lW9J8W88KiH3
+Z16 VDg1SIo80bB@j0V0VzS_@n1
+R4
+R0
+8C:/Users/tata-/Desktop/infra-hard/componentes_feitos/cpu.v
+FC:/Users/tata-/Desktop/infra-hard/componentes_feitos/cpu.v
+!i122 30
+L0 1 281
+Z17 OV;L;2020.1;71
+r1
+!s85 0
+31
+Z18 !s108 1637805159.000000
+!s107 C:/Users/tata-/Desktop/infra-hard/componentes_feitos/cpu.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/tata-/Desktop/infra-hard/componentes_feitos/cpu.v|
+!i113 1
+Z19 o-work work
+Z20 tCvgOpt 0
+vctrl_unit
+Z21 !s110 1637805160
+!i10b 1
+!s100 @H1FRAzLdD=VK0HDlKmab3
+R15
+I@2oeOO[gooRSlUN[9:<cT1
+R16
+R4
+w1637805154
+8C:/Users/tata-/Desktop/infra-hard/componentes_feitos/ctrl_unit.v
+FC:/Users/tata-/Desktop/infra-hard/componentes_feitos/ctrl_unit.v
+!i122 31
+L0 1 626
+R17
+r1
+!s85 0
+31
+R18
+!s107 C:/Users/tata-/Desktop/infra-hard/componentes_feitos/ctrl_unit.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/tata-/Desktop/infra-hard/componentes_feitos/ctrl_unit.v|
+!i113 1
+R19
+R20
+Einstr_reg
+R0
+R2
+R3
+!i122 25
+R4
+Z22 8C:/Users/tata-/Desktop/infra-hard/componentes_dados/Instr_Reg.vhd
+Z23 FC:/Users/tata-/Desktop/infra-hard/componentes_dados/Instr_Reg.vhd
+l0
+L42 1
+VAfV1kYS402dnLRiFO;Z7_2
+!s100 _X]FAEHlMn?]L[?c6kUO?1
+R7
+32
+R8
+!i10b 1
+R9
+Z24 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/tata-/Desktop/infra-hard/componentes_dados/Instr_Reg.vhd|
+Z25 !s107 C:/Users/tata-/Desktop/infra-hard/componentes_dados/Instr_Reg.vhd|
+!i113 1
+R12
+R13
+Abehavioral_arch
+R2
+R3
+DEx4 work 9 instr_reg 0 22 AfV1kYS402dnLRiFO;Z7_2
+!i122 25
+l59
+L56 32
+VTD836jU:>9m^d?0ed1C0O3
+!s100 _AcjR?n;fJneQZzaIjJFa3
+R7
+32
+R8
+!i10b 1
+R9
+R24
+R25
+!i113 1
+R12
+R13
+Ememoria
+R0
+Z26 DPx4 work 13 ram_constants 0 22 BbIcggj=<H_W75Jb?WIoZ0
+Z27 DPx3 lpm 14 lpm_components 0 22 ZZ?0`GZD@?:kcFM0gmf[@1
+R1
+R2
+R3
+!i122 26
+R4
+Z28 8C:/Users/tata-/Desktop/infra-hard/componentes_dados/Memoria.vhd
+Z29 FC:/Users/tata-/Desktop/infra-hard/componentes_dados/Memoria.vhd
+l0
+L67 1
+V<[RFRXeHV^PMOiiinkBoS0
+!s100 __XEo>II7SFLX6Xa7VZA63
+R7
+32
+R14
+!i10b 1
+R18
+Z30 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/tata-/Desktop/infra-hard/componentes_dados/Memoria.vhd|
+Z31 !s107 C:/Users/tata-/Desktop/infra-hard/componentes_dados/Memoria.vhd|
+!i113 1
+R12
+R13
+Abehavioral_arch
+R26
+R27
+R1
+R2
+R3
+DEx4 work 7 memoria 0 22 <[RFRXeHV^PMOiiinkBoS0
+!i122 26
+l103
+L79 78
+VR9W83dOfA7lWR9j>i6THA2
+!s100 aLo:Seezh^aEQ@MaJf[__3
+R7
+32
+R14
+!i10b 1
+R18
+R30
+R31
+!i113 1
+R12
+R13
+vmux_CTRL_Exception
+R21
+!i10b 1
+!s100 `Pj?ElbA<k18d=VXcIFgI2
+R15
+IIY@4cEmjeZnLUUEOz5=7i0
+R16
+R4
+R0
+8C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_CTRL_Exception.v
+FC:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_CTRL_Exception.v
+!i122 32
+Z32 L0 1 15
+R17
+r1
+!s85 0
+31
+Z33 !s108 1637805160.000000
+!s107 C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_CTRL_Exception.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_CTRL_Exception.v|
+!i113 1
+R19
+R20
+nmux_@c@t@r@l_@exception
+vmux_Hi
+R21
+!i10b 1
+!s100 gnm_YWMBSjUKFfHN99oS<0
+R15
+I7QoQSRYB`4a]6<7>GFIn@0
+R16
+R4
+R0
+8C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_Hi.v
+FC:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_Hi.v
+!i122 33
+R32
+R17
+r1
+!s85 0
+31
+R33
+!s107 C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_Hi.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_Hi.v|
+!i113 1
+R19
+R20
+nmux_@hi
+vmux_IorD
+R21
+!i10b 1
+!s100 F]IP76Cf2R=bd@BMlFjdR3
+R15
+IFl7hWi=lVY_2[^k<h<E@F2
+R16
+R4
+R0
+8C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_IorD.v
+FC:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_IorD.v
+!i122 34
+L0 1 21
+R17
+r1
+!s85 0
+31
+R33
+!s107 C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_IorD.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_IorD.v|
+!i113 1
+R19
+R20
+nmux_@ior@d
+vmux_Lo
+R21
+!i10b 1
+!s100 M^N7B?_9?iFaFGhJVYdDN3
+R15
+IVJVn5nLa[mShUI0<S@C2=1
+R16
+R4
+R0
+8C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_Lo.v
+FC:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_Lo.v
+!i122 35
+R32
+R17
+r1
+!s85 0
+31
+R33
+!s107 C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_Lo.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_Lo.v|
+!i113 1
+R19
+R20
+nmux_@lo
+vmux_MEMtoReg
+R21
+!i10b 1
+!s100 dn?HPGKbR^jodVakAY>TP3
+R15
+IiiG]I:MRNa9e>UzV;z1nj0
+R16
+R4
+R0
+8C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_MEMtoreg.v
+FC:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_MEMtoreg.v
+!i122 36
+L0 1 38
+R17
+r1
+!s85 0
+31
+R33
+!s107 C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_MEMtoreg.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_MEMtoreg.v|
+!i113 1
+R19
+R20
+nmux_@m@e@mto@reg
+vmux_PCsource
+Z34 !s110 1637805161
+!i10b 1
+!s100 i05S<M2OSKEN`@YIAn3n81
+R15
+IjddaShDUjM@BVX2zF9>BK2
+R16
+R4
+R0
+8C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_PCsource.v
+FC:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_PCsource.v
+!i122 37
+L0 1 25
+R17
+r1
+!s85 0
+31
+R33
+!s107 C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_PCsource.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_PCsource.v|
+!i113 1
+R19
+R20
+nmux_@p@csource
+vmux_regDst
+R34
+!i10b 1
+!s100 B=XRE_Z0z=DjICFoEi_@S1
+R15
+IQW1]aj9^:Ga9RIcP2]:NF3
+R16
+R4
+R0
+8C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_regDst.v
+FC:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_regDst.v
+!i122 38
+L0 1 12
+R17
+r1
+!s85 0
+31
+Z35 !s108 1637805161.000000
+!s107 C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_regDst.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_regDst.v|
+!i113 1
+R19
+R20
+nmux_reg@dst
+vmux_Shift_Amt
+R34
+!i10b 1
+!s100 n?[DQ3c?n[EDUS37zCYoP0
+R15
+IEcWdCCKoLLC0AS0PE7Kb10
+R16
+R4
+R0
+8C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_Shift_Amt.v
+FC:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_Shift_Amt.v
+!i122 39
+L0 1 18
+R17
+r1
+!s85 0
+31
+R35
+!s107 C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_Shift_Amt.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_Shift_Amt.v|
+!i113 1
+R19
+R20
+nmux_@shift_@amt
+vmux_Shift_Src
+R34
+!i10b 1
+!s100 h?VEjd3Zc490jf8Mi6J7R1
+R15
+ICD6W91gGUom1j@ZWR6zL=0
+R16
+R4
+R0
+8C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_Shift_Src.v
+FC:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_Shift_Src.v
+!i122 40
+R32
+R17
+r1
+!s85 0
+31
+R35
+!s107 C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_Shift_Src.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_Shift_Src.v|
+!i113 1
+R19
+R20
+nmux_@shift_@src
+vmux_ulaA
+R34
+!i10b 1
+!s100 G>]bjbA0b3Q?0gmNd0`1E2
+R15
+IPV2d4S51f4aI19MB3JY092
+R16
+R4
+R0
+8C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_ulaA.v
+FC:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_ulaA.v
+!i122 41
+Z36 L0 1 10
+R17
+r1
+!s85 0
+31
+R35
+!s107 C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_ulaA.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_ulaA.v|
+!i113 1
+R19
+R20
+nmux_ula@a
+vmux_ulaB
+R34
+!i10b 1
+!s100 cLCV[<GSD8V^FP25RNifQ3
+R15
+Ie6z[FA[KeF327Y:hD3YdE1
+R16
+R4
+R0
+8C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_ulaB.v
+FC:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_ulaB.v
+!i122 42
+L0 1 13
+R17
+r1
+!s85 0
+31
+R35
+!s107 C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_ulaB.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/tata-/Desktop/infra-hard/componentes_feitos/mux_ulaB.v|
+!i113 1
+R19
+R20
+nmux_ula@b
+Pram_constants
+!i122 26
+R0
+R4
+R28
+R29
+l0
+L47 1
+VBbIcggj=<H_W75Jb?WIoZ0
+!s100 5;`Z:D@MR5CT6j_[c9;6h3
+R7
+32
+R14
+!i10b 1
+R18
+R30
+R31
+!i113 1
+R12
+R13
+Eregdesloc
+R0
+R1
+R2
+R3
+!i122 27
+R4
+Z37 8C:/Users/tata-/Desktop/infra-hard/componentes_dados/RegDesloc.vhd
+Z38 FC:/Users/tata-/Desktop/infra-hard/componentes_dados/RegDesloc.vhd
+l0
+L80 1
+V4GibeROOKf]^CUjTE67Bo0
+!s100 =0ZG0kkZKT?Zo?iX2R9=P1
+R7
+32
+R14
+!i10b 1
+R18
+Z39 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/tata-/Desktop/infra-hard/componentes_dados/RegDesloc.vhd|
+Z40 !s107 C:/Users/tata-/Desktop/infra-hard/componentes_dados/RegDesloc.vhd|
+!i113 1
+R12
+R13
+Abehavioral_arch
+R1
+R2
+R3
+DEx4 work 9 regdesloc 0 22 4GibeROOKf]^CUjTE67Bo0
+!i122 27
+l98
+L93 38
+VDFCTADkAb^4XhT09kD<k32
+!s100 3`2HClJO^bJLd6@PodWh?3
+R7
+32
+R14
+!i10b 1
+R18
+R39
+R40
+!i113 1
+R12
+R13
+Eregistrador
+R0
+R2
+R3
+!i122 28
+R4
+Z41 8C:/Users/tata-/Desktop/infra-hard/componentes_dados/Registrador.vhd
+Z42 FC:/Users/tata-/Desktop/infra-hard/componentes_dados/Registrador.vhd
+l0
+L53 1
+VD=`aG^VOPEDP69ifb8G;52
+!s100 ^e8=Z<CbNTLXR@XGZJMQo3
+R7
+32
+R14
+!i10b 1
+R18
+Z43 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/tata-/Desktop/infra-hard/componentes_dados/Registrador.vhd|
+Z44 !s107 C:/Users/tata-/Desktop/infra-hard/componentes_dados/Registrador.vhd|
+!i113 1
+R12
+R13
+Abehavioral_arch
+R2
+R3
+DEx4 work 11 registrador 0 22 D=`aG^VOPEDP69ifb8G;52
+!i122 28
+l66
+L65 19
+V<kVfXRZJUh40ja<<lN_3:3
+!s100 EXKKzlBL1ARAk5TCN4`Vg2
+R7
+32
+R14
+!i10b 1
+R18
+R43
+R44
+!i113 1
+R12
+R13
+vshift_left_16
+Z45 !s110 1637805162
+!i10b 1
+!s100 BeGBhlLTcQf[DLg?lEToA1
+R15
+I258bz3UoDF;9GF7Y>=Y770
+R16
+R4
+R0
+8C:/Users/tata-/Desktop/infra-hard/componentes_feitos/shift_left_16.v
+FC:/Users/tata-/Desktop/infra-hard/componentes_feitos/shift_left_16.v
+!i122 44
+R36
+R17
+r1
+!s85 0
+31
+R35
+!s107 C:/Users/tata-/Desktop/infra-hard/componentes_feitos/shift_left_16.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/tata-/Desktop/infra-hard/componentes_feitos/shift_left_16.v|
+!i113 1
+R19
+R20
+vshift_left_2
+R34
+!i10b 1
+!s100 Ua:oK7k665C;]Z6ZB2Kd31
+R15
+Id59MhG?6I9<zC[T8c_RYe3
+R16
+R4
+R0
+8C:/Users/tata-/Desktop/infra-hard/componentes_feitos/shift_left_2.v
+FC:/Users/tata-/Desktop/infra-hard/componentes_feitos/shift_left_2.v
+!i122 43
+Z46 L0 1 8
+R17
+r1
+!s85 0
+31
+R35
+!s107 C:/Users/tata-/Desktop/infra-hard/componentes_feitos/shift_left_2.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/tata-/Desktop/infra-hard/componentes_feitos/shift_left_2.v|
+!i113 1
+R19
+R20
+vsign_extend_16
+R45
+!i10b 1
+!s100 [27czmPRJ_GPI5g0o>WYA3
+R15
+I[ZHB40A93kZQE<Uk:_VS=0
+R16
+R4
+R0
+8C:/Users/tata-/Desktop/infra-hard/componentes_feitos/sign_extend_16.v
+FC:/Users/tata-/Desktop/infra-hard/componentes_feitos/sign_extend_16.v
+!i122 47
+R46
+R17
+r1
+!s85 0
+31
+Z47 !s108 1637805162.000000
+!s107 C:/Users/tata-/Desktop/infra-hard/componentes_feitos/sign_extend_16.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/tata-/Desktop/infra-hard/componentes_feitos/sign_extend_16.v|
+!i113 1
+R19
+R20
+vsign_extend_1to32
+R45
+!i10b 1
+!s100 YE<S`cODcLmkUHH9U4bdg2
+R15
+I9OZYoSii0`>7nRJgTW[ig2
+R16
+R4
+R0
+8C:/Users/tata-/Desktop/infra-hard/componentes_feitos/sign_extend_1to32.v
+FC:/Users/tata-/Desktop/infra-hard/componentes_feitos/sign_extend_1to32.v
+!i122 45
+Z48 L0 1 6
+R17
+r1
+!s85 0
+31
+R47
+!s107 C:/Users/tata-/Desktop/infra-hard/componentes_feitos/sign_extend_1to32.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/tata-/Desktop/infra-hard/componentes_feitos/sign_extend_1to32.v|
+!i113 1
+R19
+R20
+vsign_extend_8to32
+R45
+!i10b 1
+!s100 UM^?j>:afeJfcM<ggM`b[0
+R15
+IRYa:<`QO?lIaPSjol?:jl0
+R16
+R4
+R0
+8C:/Users/tata-/Desktop/infra-hard/componentes_feitos/sign_extend_8to32.v
+FC:/Users/tata-/Desktop/infra-hard/componentes_feitos/sign_extend_8to32.v
+!i122 46
+R48
+R17
+r1
+!s85 0
+31
+R47
+!s107 C:/Users/tata-/Desktop/infra-hard/componentes_feitos/sign_extend_8to32.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/tata-/Desktop/infra-hard/componentes_feitos/sign_extend_8to32.v|
+!i113 1
+R19
+R20
+vss_component
+R45
+!i10b 1
+!s100 TSEPR0o1[kZORVXZNEzKb1
+R15
+IZGlD7XlE[ob3TzDOjeWc_3
+R16
+R4
+R0
+8C:/Users/tata-/Desktop/infra-hard/componentes_feitos/ss_component.v
+FC:/Users/tata-/Desktop/infra-hard/componentes_feitos/ss_component.v
+!i122 48
+L0 1 26
+R17
+r1
+!s85 0
+31
+R47
+!s107 C:/Users/tata-/Desktop/infra-hard/componentes_feitos/ss_component.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/tata-/Desktop/infra-hard/componentes_feitos/ss_component.v|
+!i113 1
+R19
+R20
+Eula32
+R0
+R1
+R2
+R3
+!i122 29
+R4
+Z49 8C:/Users/tata-/Desktop/infra-hard/componentes_dados/ula32.vhd
+Z50 FC:/Users/tata-/Desktop/infra-hard/componentes_dados/ula32.vhd
+l0
+L63 1
+VM1`EhBco;Cb9<:6CC>b?e2
+!s100 bGmbVJaTC>R`I<lBgn7@L3
+R7
+32
+R14
+!i10b 1
+R18
+Z51 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/tata-/Desktop/infra-hard/componentes_dados/ula32.vhd|
+Z52 !s107 C:/Users/tata-/Desktop/infra-hard/componentes_dados/ula32.vhd|
+!i113 1
+R12
+R13
+Abehavioral
+R1
+R2
+R3
+DEx4 work 5 ula32 0 22 M1`EhBco;Cb9<:6CC>b?e2
+!i122 29
+l89
+L79 138
+VF94M;2UJ^55hCen3Z[Kfk0
+!s100 1E>E2KjDKb=5dkES8U2ha0
+R7
+32
+R14
+!i10b 1
+R18
+R51
+R52
+!i113 1
+R12
+R13
