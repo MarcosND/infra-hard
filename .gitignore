@@ -1,11 +1,51 @@
-intrucoes.mif
-teste.cr.mti
-teste.mpf
-transcript
-vsim.wlf
+.DS_store
+
+# Created by https://www.toptal.com/developers/gitignore/api/modelsim
+# Edit at https://www.toptal.com/developers/gitignore?templates=modelsim
+
+### ModelSim ###
+# ignore ModelSim generated files and directories (temp files and so on)
+[_@]*
+
+# ignore compilation output of ModelSim
+*.mti
+*.dat
+*.dbs
+*.psm
+*.bak
+*.cmp
+*.jpg
+*.html
+*.bsf
+
+# ignore simulation output of ModelSim
+wlf*
+*.wlf
+*.vstf
+*.ucdb
+cov*/
+transcript*
+sc_dpiheader.h
+vsim.dbg
+
+/db
+/incremental_db
+/simulation
 /work
 
+*.mpf
+*.qpf
+*.rpt
+*.summary
+*.done
+*.map
+*.pin
+*.qsf
+*.done
+*.smsg
+*.map
+*.qws
+*.sof
 *.mif
-*.mti
-*.mtf
-.*wlf
+
+# End of https://www.toptal.com/developers/gitignore/api/modelsim
