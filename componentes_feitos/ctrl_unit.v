@@ -219,11 +219,11 @@ always @(posedge clk) begin
         PC_write            = 1'b0;  
         MEM_write           = 1'b0;
         IR_write            = 1'b0; 
-        AB_w                = 1'b1; 
+        AB_w                = 1'b0; 
         Regwrite            = 1'b0; 
         AluSrcA             = 1'b0; //
-        AluSrcB             = 2'b10; //
-        Alu_control         = 3'b001; 
+        AluSrcB             = 2'b00; //
+        Alu_control         = 3'b000; 
         ALUOutCtrl          = 1'b0; //
         MEMtoReg            = 4'b0000; 
         PCsource            = 2'b00; 
@@ -645,10 +645,10 @@ always @(posedge clk) begin
         IR_write            = 1'b0; 
         AB_w                = 1'b0;
         Regwrite            = 1'b0; 
-        AluSrcA             = 1'b1; 
+        AluSrcA             = 1'b1; //
         AluSrcB             = 2'b11; //
         Alu_control         = 3'b001;
-        ALUOutCtrl          = 1'b1;  // NÃO SABEMOS SE É PRA MUDAR OU NÃO, CONSULTAR MARCOS
+        ALUOutCtrl          = 1'b1;  // Sim, é pra mudar
         MEMtoReg            = 4'b0000; 
         PCsource            = 2'b00;
         IorD                = 2'b00; 
@@ -673,12 +673,12 @@ always @(posedge clk) begin
         MEM_write           = 1'b0;
         IR_write            = 1'b0; 
         AB_w                = 1'b0;
-        Regwrite            = 1'b1; 
-        AluSrcA             = 1'b1; 
-        AluSrcB             = 2'b10; 
+        Regwrite            = 1'b1; //
+        AluSrcA             = 1'b0;  //
+        AluSrcB             = 2'b00; // 
         Alu_control         = 3'b000;
         ALUOutCtrl          = 1'b0;
-        MEMtoReg            = 4'b0010; 
+        MEMtoReg            = 4'b0101; //
         PCsource            = 2'b00;
         IorD                = 2'b00; 
 
@@ -698,12 +698,12 @@ always @(posedge clk) begin
         MEM_write           = 1'b0;
         IR_write            = 1'b0; 
         AB_w                = 1'b0;
-        Regwrite            = 1'b1; 
-        AluSrcA             = 1'b1; 
-        AluSrcB             = 2'b10; 
+        Regwrite            = 1'b1; //
+        AluSrcA             = 1'b0; 
+        AluSrcB             = 2'b00; 
         Alu_control         = 3'b000;
         ALUOutCtrl          = 1'b0;
-        MEMtoReg            = 4'b0010; 
+        MEMtoReg            = 4'b0101; //
         PCsource            = 2'b00;
         IorD                = 2'b00; 
 
