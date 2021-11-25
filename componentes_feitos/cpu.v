@@ -13,6 +13,7 @@ module cpu(
     wire [1:0] M_writeReg;
     wire Regwrite;
     wire AB_write;
+    wire EPC_Write;
     wire AluSrcA;
     wire [1:0] AluSrcB;
     wire ALUOutCtrl;
@@ -113,6 +114,7 @@ module cpu(
         B_out
     );
 
+    
     Registrador ALUOut_(
         clock,
         reset,
@@ -121,6 +123,14 @@ module cpu(
         ALUOut_out
     );
 
+    Registrador EPC(
+        clock,
+        reset,
+        EPC_Write,
+        PC_out,
+        EPC_out
+        
+    );
     Memoria MEM_(
         PC_out,
         clock,
@@ -256,6 +266,7 @@ module cpu(
         MEM_write,
         IR_write,
         AB_write,
+        EPC_Write,
         Regwrite,
         ALUOutCtrl,
         Alu_control,
