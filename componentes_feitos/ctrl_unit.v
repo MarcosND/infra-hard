@@ -70,8 +70,8 @@ reg[5:0] STATE;
     parameter ST_SRAV = 6'b001111;
     parameter ST_SLLV = 6'b010000;
     parameter ST_SHIFT_END_1 = 6'b001101;
-    parameter ST_SLT = 6'b10001;
-    parameter ST_RTE = 6'b10010;
+    parameter ST_SLT = 6'b010001;
+    parameter ST_RTE = 6'b010010;
     parameter ST_CLOSE_WRITE = 6'b111111;
 
     //Opcode
@@ -89,7 +89,7 @@ reg[5:0] STATE;
     parameter FUNCT_SRAV = 6'b000111;
     parameter FUNCT_SRL = 6'b000010;
     parameter FUNCT_SLT = 6'b101010;
-    parameter FUNCT_RTE = 010011;
+    parameter FUNCT_RTE = 6'b010011;
     //sram
 
 always @(posedge clk) begin

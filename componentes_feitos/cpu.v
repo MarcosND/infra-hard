@@ -129,8 +129,8 @@ module cpu(
         EPC_Write,
         PC_out,
         EPC_out
-        
     );
+
     Memoria MEM_(
         PC_out,
         clock,
