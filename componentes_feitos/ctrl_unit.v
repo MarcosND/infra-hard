@@ -3,6 +3,7 @@ module ctrl_unit (
     input wire  clk,
     input wire  reset,
     
+    
 
 
     //fios de controle 
@@ -10,6 +11,7 @@ module ctrl_unit (
     output reg          MEM_write,    
     output reg          IR_write,
     output reg          AB_w,
+    output reg          EPC_Write, // FALTA DECLARAR EM TODOS OS ESTADOS
     output reg          Regwrite,
     output reg          ALUOutCtrl,
                     
@@ -69,6 +71,7 @@ reg[5:0] STATE;
     parameter ST_SLLV = 6'b010000;
     parameter ST_SHIFT_END_1 = 6'b001101;
     parameter ST_SLT = 6'b10001;
+    parameter ST_RTE = 6'b10010;
     parameter ST_CLOSE_WRITE = 6'b111111;
 
     //Opcode
@@ -86,6 +89,7 @@ reg[5:0] STATE;
     parameter FUNCT_SRAV = 6'b000111;
     parameter FUNCT_SRL = 6'b000010;
     parameter FUNCT_SLT = 6'b101010;
+    parameter FUNCT_RTE = 010011;
     //sram
 
 always @(posedge clk) begin
@@ -232,6 +236,11 @@ always @(posedge clk) begin
                 end
                 FUNCT_SLT: begin
                   STATE = ST_SLT;
+                end
+                FUNCT_RTE: begin
+                  STATE = ST_RTE;
+
+
                 end
               endcase
             end
@@ -551,6 +560,35 @@ always @(posedge clk) begin
           STATE = ST_CLOSE_WRITE;
         end
 
+        
+        
+        ST_RTE: begin
+          
+        ShiftAmt            = 2'b00; 
+        ShiftControl        = 3'b000; 
+        ShiftSrc            = 1'b0;
+        M_writeReg          = 2'b00;
+        PC_write            = 1'b1;  
+        MEM_write           = 1'b0;
+        IR_write            = 1'b0; 
+        AB_w                = 1'b0;
+        Regwrite            = 1'b0; 
+        AluSrcA             = 1'b0; 
+        AluSrcB             = 2'b00; 
+        Alu_control         = 3'b000;
+        ALUOutCtrl          = 1'b0;
+        MEMtoReg            = 4'b0000; 
+        PCsource            = 2'b01;
+        IorD                = 2'b00; 
+
+
+      STATE = ST_CLOSE_WRITE;
+
+
+        end
+        
+        
+        
         ST_CLOSE_WRITE: begin
                //Define os sinais, vai zerar tudo
         ShiftAmt            = 2'b00; 
