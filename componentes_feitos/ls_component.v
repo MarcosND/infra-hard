@@ -5,7 +5,7 @@ module ls_component(
 );
 
 always @(*) begin
-        case (lscontroler)
+        case (LScontroler)
             2'b00: 
                 ls_component_out <= MDR_out;
             2'b10:
