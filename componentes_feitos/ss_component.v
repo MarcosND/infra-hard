@@ -1,7 +1,7 @@
 module ss_component(
+    input wire [1:0] controleSS,
     input wire [31:0] dataRegOut,
     input wire [31:0] b_out,
-    input wire [1:0] controleSS,
     output reg [31:0] ss_out
 );
 

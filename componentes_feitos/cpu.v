@@ -69,6 +69,7 @@ module cpu(
     wire [31:0] HI_out;
     wire [31:0] LO_out;
     wire [31:0] SE1_32_out;
+    wire [31:0] SL16_out;
 
     wire [31:0] MDR_out;
     wire [31:0] MEMtoReg_out;
@@ -142,7 +143,7 @@ module cpu(
     );
 
     Memoria MEM_(
-        PC_out,
+        IorD_out,
         clock,
         MEM_write,
         SS_out,
@@ -152,7 +153,7 @@ module cpu(
     ss_component SS_(
         controleSS,
         MDR_out,
-        b_out,
+        B_out,
         SS_out
     );
 
@@ -254,7 +255,7 @@ module cpu(
         LO_out,
         SE1_32_out,
         ULA_out,
-        SE16_out,
+        SL16_out,
         ShiftReg_out,
         MEMtoReg_out
     );
@@ -274,6 +275,11 @@ module cpu(
     shift_left_2 SL2_(
         SE16_out,
         SL2_out
+    );
+
+    shift_left_16 SL16_(
+       OFFSET,
+       SL16_out 
     );
 
     ctrl_unit CTRL_(
