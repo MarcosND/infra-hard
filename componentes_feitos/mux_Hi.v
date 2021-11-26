@@ -1,5 +1,5 @@
 module mux_Hi (
-    input wire [1:0] seletor, //Não tenho certeza se são 2 bits
+    input wire  seletor, 
     input wire [31:0] Hi0_out,
     input wire [31:0] Hi1_out,
     output reg [31:0] result

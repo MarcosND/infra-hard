@@ -11,6 +11,8 @@ module cpu(
     wire MEM_write;
     wire IR_write;
     wire Mult_Div;
+    wire HIWrite;
+    wire LOWrite;
     wire [1:0] M_writeReg;
     wire Regwrite;
     wire AB_write;
@@ -83,6 +85,8 @@ module cpu(
     wire [31:0] div_Hi_out;
     wire [31:0] mult_Lo_out;
     wire [31:0] div_Lo_out;
+    wire [31:0] HI_out_mux;
+    wire [31:0] Lo_out_mux;
     wire [25:0] concatena_out;
     
     
@@ -205,6 +209,43 @@ module cpu(
         ShiftSrc_out,
         ShiftReg_out
     );
+
+    Registrador HI_(
+        clock,
+        reset,
+        HIWrite,
+        HI_out_mux,
+        HI_out
+    );
+    
+    Registrador LO_(
+        clock,
+        reset,
+        LOWrite,
+        Lo_out_mux,
+        LO_out 
+    );
+
+    multiplicador MULT_(
+        clock,
+        reset,
+        Mult_Div,
+        A_out,
+        B_out,
+        mult_Hi_out,
+        mult_Lo_out,
+    );
+
+    divisor DIV_(
+        clock,
+        reset,
+        Mult_Div,
+        A_out,
+        B_out,
+        div_Hi_out,
+        div_Lo_out,
+    );
+
     
     shift_left_26to28 shift_left_26to28(
         concatena_out,
@@ -301,14 +342,14 @@ module cpu(
         Mult_Div,
         mult_Hi_out,
         div_Hi_out,
-        HI_out
+        HI_out_mux
     );
 
     mux_Lo LO_(
         Mult_Div,
-        LO_out,
-        div_Hi_out, 
-        div_LO_out 
+        mult_Lo_out, 
+        div_Lo_out,
+        Lo_out_mux
     );
 
     // sign extends
@@ -340,6 +381,8 @@ module cpu(
         MEM_write,
         IR_write,
         Mult_Div,
+        HIWrite,
+        LOWrite,
         AB_write,
         EPC_Write,
         Regwrite,
