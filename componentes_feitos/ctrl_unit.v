@@ -348,13 +348,13 @@ always @(posedge clk) begin
               STATE = ST_SLTI;
             end
             LW: begin
-              STATE = ST_LW;
+              STATE = ST_LOAD;
             end
             LB: begin
-              STATE = ST_LB;
+              STATE = ST_LOAD;
             end
             LH: begin
-              STATE = ST_LH;
+              STATE = ST_LOAD;
             end
 
 
