@@ -88,6 +88,7 @@ module cpu(
     wire [31:0] HI_out_mux;
     wire [31:0] Lo_out_mux;
     wire [25:0] concatena_out;
+    wire [31:0] conc_out;
     
     
 
@@ -233,7 +234,7 @@ module cpu(
         A_out,
         B_out,
         mult_Hi_out,
-        mult_Lo_out,
+        mult_Lo_out
     );
 
     divisor DIV_(
@@ -243,7 +244,7 @@ module cpu(
         A_out,
         B_out,
         div_Hi_out,
-        div_Lo_out,
+        div_Lo_out
     );
 
     
@@ -338,14 +339,14 @@ module cpu(
         MEMtoReg_out
     );
 
-    mux_Hi HI_(
+    mux_Hi HI2_(
         Mult_Div,
         mult_Hi_out,
         div_Hi_out,
         HI_out_mux
     );
 
-    mux_Lo LO_(
+    mux_Lo LO2_(
         Mult_Div,
         mult_Lo_out, 
         div_Lo_out,
