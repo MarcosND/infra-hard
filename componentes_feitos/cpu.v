@@ -10,6 +10,7 @@ module cpu(
     wire PC_write;
     wire MEM_write;
     wire IR_write;
+    wire Mult_Div;
     wire [1:0] M_writeReg;
     wire Regwrite;
     wire AB_write;
@@ -23,6 +24,7 @@ module cpu(
     wire [1:0] PCsource;
     wire [1:0] IorD;
     wire [1:0] controleSS;
+    wire [1:0] controleLS;
     wire [2:0] ShiftControl;
     wire [1:0] ShiftAmt;
     wire ShiftSrc;
@@ -75,6 +77,15 @@ module cpu(
     wire [31:0] MEMtoReg_out;
     wire [31:0] ShiftSrc_out;
     wire [31:0] ShiftReg_out;
+    wire [31:0] mult_output_HI;
+    
+    wire [31:0] mult_Hi_out;
+    wire [31:0] div_Hi_out;
+    wire [31:0] mult_Lo_out;
+    wire [31:0] div_Lo_out;
+    wire [25:0] concatena_out;
+    
+    
 
 // lembrar de quando rodar o modelsim, antes do ciclo inical setar o reset para 1, e no proximo colocar pra 0.
 
@@ -157,6 +168,12 @@ module cpu(
         SS_out
     );
 
+    ls_component LS_(
+        controleLS,
+        MDR_out,
+        LS_out
+    );
+
     Instr_Reg IR_(
         clock,
         reset,
@@ -188,6 +205,26 @@ module cpu(
         ShiftSrc_out,
         ShiftReg_out
     );
+    
+    shift_left_26to28 shift_left_26to28(
+        concatena_out,
+        Shiftleft_26to28_out
+
+    );
+    concatena_26to28 concatena_26to28(
+        RT,
+        RS,
+        OFFSET,
+        concatena_out 
+    );
+
+   concatena_28to32 concatena_28to32(
+        PC_out,
+        Shiftleft_26to28_out, // bota aqui a saida do shift left pra 32
+        conc_out 
+    );
+            
+
 
 
     // muxes
@@ -260,6 +297,20 @@ module cpu(
         MEMtoReg_out
     );
 
+    mux_Hi HI_(
+        Mult_Div,
+        mult_Hi_out,
+        div_Hi_out,
+        HI_out
+    );
+
+    mux_Lo LO_(
+        Mult_Div,
+        LO_out,
+        div_Hi_out, 
+        div_LO_out 
+    );
+
     // sign extends
 
     sign_extend_16 SE16_(
@@ -288,6 +339,7 @@ module cpu(
         PC_write,
         MEM_write,
         IR_write,
+        Mult_Div,
         AB_write,
         EPC_Write,
         Regwrite,
@@ -297,6 +349,7 @@ module cpu(
         ShiftControl,
         MEMtoReg,
         controleSS,
+        controleLS,
         M_writeReg,
         IorD,
         PCsource,

@@ -10,6 +10,7 @@ module ctrl_unit (
     output reg          PC_write,
     output reg          MEM_write,    
     output reg          IR_write,
+    output reg          Mult_Div,
     output reg          AB_w,
     output reg          EPC_Write, // FALTA DECLARAR EM TODOS OS ESTADOS
     output reg          Regwrite,
@@ -20,6 +21,7 @@ module ctrl_unit (
     output reg      [2:0] ShiftControl,
     output reg      [3:0] MEMtoReg, 
     output reg      [1:0] controleSS,
+    output reg      [1:0] controleLS,
     //output reg      [1:0] Exception,
 
     
@@ -85,11 +87,17 @@ reg[5:0] STATE;
     parameter ST_STORE_WAIT_2 = 6'b011010; // 26
     parameter ST_SW = 6'b011011;
     parameter ST_SH = 6'b011100;
-    parameter ST_SB = 6'b011101; // 29, ultimo state adicionar a partir daqui
+    parameter ST_SB = 6'b011101; // 29
     parameter ST_LUI = 6'b011110; // 30
     parameter ST_JR = 6'b011111; // 31
     parameter ST_J = 6'b100000; // 32
-    
+    parameter ST_SLTI = 6'b100001 ; // 33
+    parameter ST_LOAD = 6'b100010; // 34
+    parameter ST_LOAD_WAIT = 6'b100011; // 35
+    parameter ST_LOAD_WAIT_2 = 6'b100100; // 36
+    parameter ST_LW = 6'b100101; // 37
+    parameter ST_LH = 6'b100110; // 38
+    parameter ST_LB = 6'b100111; // 39, ultimo state adicionar a partir daqui
     parameter ST_CLOSE_WRITE = 6'b111111;
     
     
@@ -113,8 +121,6 @@ reg[5:0] STATE;
     parameter SW    = 6'b101011;
     parameter J     = 6'b000010;
     parameter JAL   = 6'b000011;
-   
-
 
     // Function
     parameter FUNCT_ADD = 6'b100000;
@@ -153,6 +159,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00;
         IorD                = 2'b00;
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
         
         STATE = ST_FETCH_1;
@@ -180,6 +187,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00;
         IorD                = 2'b00;  
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0; 
                 
         STATE = ST_FETCH_2;   
@@ -206,6 +214,7 @@ always @(posedge clk) begin
         PCsource            = 2'b10; //
         IorD                = 2'b00; 
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
         
         STATE = ST_DECODE;
@@ -230,6 +239,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00; //
         IorD                = 2'b00; 
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
 
         STATE = ST_DECODE_2;
@@ -253,6 +263,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00; 
         IorD                = 2'b00; 
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
         
             
@@ -333,6 +344,18 @@ always @(posedge clk) begin
             J: begin
               STATE = ST_J;
             end
+            SLTI: begin
+              STATE = ST_SLTI;
+            end
+            LW: begin
+              STATE = ST_LW;
+            end
+            LB: begin
+              STATE = ST_LB;
+            end
+            LH: begin
+              STATE = ST_LH;
+            end
 
 
           endcase
@@ -357,6 +380,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00;
         IorD                = 2'b00; 
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
             
                 STATE = ST_CLOSE_ARITH;
@@ -380,6 +404,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00;
         IorD                = 2'b00; 
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
             
                 STATE = ST_CLOSE_ARITH;
@@ -402,6 +427,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00;
         IorD                = 2'b00; 
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
             
                 STATE = ST_CLOSE_ARITH;
@@ -425,6 +451,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00;
         IorD                = 2'b00; 
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
 
         STATE = ST_CLOSE_WRITE;
@@ -449,6 +476,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00;
         IorD                = 2'b00; 
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
         
 
@@ -484,6 +512,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00;
         IorD                = 2'b00; 
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
         
         
@@ -510,6 +539,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00;
         IorD                = 2'b00; 
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
         
         
@@ -535,6 +565,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00;
         IorD                = 2'b00; 
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
         
         
@@ -561,6 +592,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00;
         IorD                = 2'b00; 
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
         
         
@@ -594,6 +626,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00;
         IorD                = 2'b00; 
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
         
         
@@ -620,6 +653,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00;
         IorD                = 2'b00; 
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
         
         
@@ -646,6 +680,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00;
         IorD                = 2'b00; 
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
         
         
@@ -671,6 +706,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00;
         IorD                = 2'b00; 
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
 
           STATE = ST_CLOSE_WRITE;
@@ -697,6 +733,7 @@ always @(posedge clk) begin
         PCsource            = 2'b01;
         IorD                = 2'b00; 
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
 
 
@@ -725,6 +762,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00;
         IorD                = 2'b00; 
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
 
         if (OPCODE == ADDI) begin  // Faz a verificação pra saber qual caso ir depois da mudança de estado padrão
@@ -756,6 +794,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00;
         IorD                = 2'b00; 
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
 
         STATE = ST_CLOSE_WRITE;  
@@ -783,6 +822,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00;
         IorD                = 2'b00; 
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
 
         STATE = ST_CLOSE_WRITE;
@@ -811,6 +851,7 @@ always @(posedge clk) begin
         PCsource            = 2'b11; //
         IorD                = 2'b00; 
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
         
 
@@ -836,6 +877,7 @@ always @(posedge clk) begin
         PCsource            = 2'b11; //
         IorD                = 2'b00; 
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
         
         case (OPCODE)
@@ -894,6 +936,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00;
         IorD                = 2'b10;//
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
 
         STATE = ST_STORE_WAIT;  
@@ -919,6 +962,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00;
         IorD                = 2'b10; //
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
 
         STATE = ST_STORE_WAIT_2;
@@ -945,6 +989,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00;
         IorD                = 2'b00; 
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b1;//
 
         case(OPCODE)
@@ -980,6 +1025,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00;
         IorD                = 2'b10; //  
         controleSS          = 2'b00;//
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
 
         STATE = ST_CLOSE_WRITE;
@@ -1005,6 +1051,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00;
         IorD                = 2'b10; //  
         controleSS          = 2'b10;//
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
 
         STATE = ST_CLOSE_WRITE;
@@ -1030,6 +1077,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00;
         IorD                = 2'b10; //
         controleSS          = 2'b01;//
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
 
         STATE = ST_CLOSE_WRITE;
@@ -1057,6 +1105,7 @@ always @(posedge clk) begin
         PCsource            = 2'b00;
         IorD                = 2'b00;
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
 
         
@@ -1087,6 +1136,7 @@ always @(posedge clk) begin
         PCsource            = 2'b10; //
         IorD                = 2'b00;
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
         STATE = ST_CLOSE_WRITE;
         
@@ -1111,14 +1161,41 @@ always @(posedge clk) begin
         PCsource            = 2'b00;//
         IorD                = 2'b00;
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
 
 
         STATE = ST_CLOSE_WRITE;
         end
-        
-        ST_CLOSE_WRITE: begin
 
+        ST_SLTI: begin
+        ShiftAmt            = 2'b00; 
+        ShiftControl        = 3'b000; 
+        ShiftSrc            = 1'b0;
+        M_writeReg          = 2'b00; // 
+        PC_write            = 1'b0;  
+        EPC_Write           = 1'b0;
+        MEM_write           = 1'b0;
+        IR_write            = 1'b0; 
+        AB_w                = 1'b0;
+        Regwrite            = 1'b1; //
+        AluSrcA             = 1'b1; // 
+        AluSrcB             = 2'b11; // 
+        Alu_control         = 3'b111; // 
+        ALUOutCtrl          = 1'b0;
+        MEMtoReg            = 4'b0111; ///
+        PCsource            = 2'b00;
+        IorD                = 2'b00;
+        controleSS          = 2'b00;
+        controleLS          = 2'b00;
+        MDR_Write           = 1'b0;
+
+        STATE = ST_CLOSE_WRITE;
+
+          
+        end 
+        
+        ST_LOAD: begin
         ShiftAmt            = 2'b00; 
         ShiftControl        = 3'b000; 
         ShiftSrc            = 1'b0;
@@ -1129,16 +1206,186 @@ always @(posedge clk) begin
         IR_write            = 1'b0; 
         AB_w                = 1'b0;
         Regwrite            = 1'b0; 
-        AluSrcA             = 1'b0; 
-        AluSrcB             = 2'b00; 
-        Alu_control         = 3'b000;
+        AluSrcA             = 1'b1; // 
+        AluSrcB             = 2'b11; //
+        Alu_control         = 3'b001; //
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0000; 
         PCsource            = 2'b00;
-        IorD                = 2'b00;
+        IorD                = 2'b11; //
         controleSS          = 2'b00;
+        controleLS          = 2'b00;
         MDR_Write           = 1'b0;
 
+        
+        
+        STATE = ST_LOAD_WAIT;
+
+        end
+        
+          ST_LOAD_WAIT: begin
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b1; // 
+          AluSrcB             = 2'b11; //
+          Alu_control         = 3'b001; //
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 2'b00;
+          IorD                = 2'b11; //
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0;
+
+        STATE = ST_LOAD_WAIT_2;
+
+        end
+        
+        ST_LOAD_WAIT_2: begin
+        ShiftAmt            = 2'b00; 
+        ShiftControl        = 3'b000; 
+        ShiftSrc            = 1'b0;
+        M_writeReg          = 2'b00;
+        PC_write            = 1'b0;  
+        EPC_Write           = 1'b0;
+        MEM_write           = 1'b0;
+        IR_write            = 1'b0; 
+        AB_w                = 1'b0;
+        Regwrite            = 1'b0; 
+        AluSrcA             = 1'b1; // 
+        AluSrcB             = 2'b11; //
+        Alu_control         = 3'b001; //
+        ALUOutCtrl          = 1'b0;
+        MEMtoReg            = 4'b0000; 
+        PCsource            = 2'b00;
+        IorD                = 2'b11; //
+        controleSS          = 2'b00;
+        controleLS          = 2'b00;
+        MDR_Write           = 1'b1; //
+
+        case (OPCODE)
+          LW: begin
+            STATE = ST_LW;
+          end
+          LH: begin
+            STATE = ST_LH;
+          end
+          LB: begin
+            STATE = ST_LB;
+          end 
+        endcase
+        
+        end
+        
+        ST_LW: begin
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b1;  //
+          AluSrcA             = 1'b0;  
+          AluSrcB             = 2'b00; 
+          Alu_control         = 3'b000; 
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0011; //
+          PCsource            = 2'b00;
+          IorD                = 2'b00; 
+          controleSS          = 2'b00;
+          controleLS          = 2'b00; //
+          MDR_Write           = 1'b0;
+
+        STATE = ST_CLOSE_WRITE;
+
+        end
+
+        ST_LH: begin
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00; //
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b1; //
+          AluSrcA             = 1'b0; 
+          AluSrcB             = 2'b00; 
+          Alu_control         = 3'b000; 
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0011; //
+          PCsource            = 2'b00;
+          IorD                = 2'b00; 
+          controleSS          = 2'b00;
+          controleLS          = 2'b10; //
+          MDR_Write           = 1'b0;
+
+        STATE = ST_CLOSE_WRITE;
+
+        end
+
+        ST_LB: begin
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b1; //
+          AluSrcA             = 1'b0; 
+          AluSrcB             = 2'b00; 
+          Alu_control         = 3'b000; 
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0011; // 
+          PCsource            = 2'b00;
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b01;//
+          MDR_Write           = 1'b0;
+
+        STATE = ST_CLOSE_WRITE;
+
+        end
+
+        
+        ST_CLOSE_WRITE: begin
+
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b00;
+          Alu_control         = 3'b000;
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 2'b00;
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0;
         
         
         STATE = ST_FETCH_1;
