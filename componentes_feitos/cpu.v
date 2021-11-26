@@ -304,7 +304,7 @@ module cpu(
 
     mux_PCsource PcSource_(
         PCsource,
-        Shiftleft_26to28_out,
+        conc_out,
         EPC_out,
         ULA_out,
         ALUOut_out,
