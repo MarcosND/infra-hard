@@ -103,6 +103,9 @@ reg[5:0] STATE;
     parameter ST_BREAK = 6'b101000  ; // 40
     parameter ST_MFHI = 6'b101001  ; // 41
     parameter ST_MFLO = 6'b101010  ; // 42
+    parameter ST_BREAK = 6'b101011; // 43
+    parameter ST_MULT_1 = 6'b101100; // 44
+    parameter ST_MULT_2 = 6'b101101; // 45
     parameter ST_CLOSE_WRITE = 6'b111111;
    
     
@@ -140,6 +143,7 @@ reg[5:0] STATE;
     parameter FUNCT_SLT = 6'b101010;
     parameter FUNCT_RTE = 6'b010011;
     parameter FUNCT_JR = 6'b001000;
+    parameter FUNCT_MULT 	= 6'b011000;
     //sram
 
 always @(posedge clk) begin
@@ -167,6 +171,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
         
         STATE = ST_FETCH_1;
          
@@ -195,6 +202,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0; 
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
                 
         STATE = ST_FETCH_2;   
             
@@ -222,6 +232,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
         
         STATE = ST_DECODE;
         
@@ -247,6 +260,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
 
         STATE = ST_DECODE_2;
             end
@@ -271,7 +287,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
-        
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
             
         case (OPCODE)
             R: begin
@@ -308,6 +326,9 @@ always @(posedge clk) begin
                 end
                 FUNCT_JR: begin
                   STATE = ST_JR;
+                end
+                FUNCT_MULT: begin
+                  STATE = ST_MULT_1;
                 end
               endcase
             end
@@ -388,7 +409,10 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
-            
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
+
                 STATE = ST_CLOSE_ARITH;
         end
 
@@ -412,7 +436,10 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
-            
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
+
                 STATE = ST_CLOSE_ARITH;
         end
             ST_AND: begin
@@ -435,7 +462,10 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
-            
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
+
                 STATE = ST_CLOSE_ARITH;
         end
             ST_CLOSE_ARITH: begin
@@ -459,6 +489,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
 
         STATE = ST_CLOSE_WRITE;
 
@@ -484,7 +517,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
-        
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
 
             case (FUNCTION)
                 FUNCT_SLL: begin
@@ -520,7 +555,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
-        
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
         
         STATE = ST_SHIFT_END_1;
 
@@ -547,7 +584,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
-        
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
         
         STATE = ST_SHIFT_END_1;
         
@@ -573,7 +612,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
-        
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
         
         STATE = ST_SHIFT_END_1;
 
@@ -600,7 +641,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
-        
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
         
         case (FUNCTION)
                 FUNCT_SRAV: begin
@@ -634,7 +677,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
-        
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
         
         STATE = ST_SHIFT_END_1;
 
@@ -661,7 +706,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
-        
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
         
         STATE = ST_SHIFT_END_1;
 
@@ -688,7 +735,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
-        
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
         
         STATE = ST_CLOSE_WRITE;
 
@@ -714,6 +763,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
 
           STATE = ST_CLOSE_WRITE;
         end
@@ -741,6 +793,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
 
 
       STATE = ST_CLOSE_WRITE;
@@ -770,6 +825,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
 
         if (OPCODE == ADDI) begin  // Faz a verificação pra saber qual caso ir depois da mudança de estado padrão
           STATE = ST_ADDI;
@@ -802,6 +860,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
 
         STATE = ST_CLOSE_WRITE;  
 
@@ -830,6 +891,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
 
         STATE = ST_CLOSE_WRITE;
           
@@ -859,6 +923,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
         
 
         STATE = ST_BRANCH_END;
@@ -885,6 +952,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
         
         case (OPCODE)
           BEQ: begin
@@ -944,6 +1014,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
 
         STATE = ST_STORE_WAIT;  
         end
@@ -970,6 +1043,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
 
         STATE = ST_STORE_WAIT_2;
         end
@@ -997,6 +1073,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b1;//
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
 
         case(OPCODE)
           SW : begin
@@ -1033,6 +1112,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;//
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
 
         STATE = ST_CLOSE_WRITE;
         end
@@ -1059,6 +1141,9 @@ always @(posedge clk) begin
         controleSS          = 2'b10;//
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
 
         STATE = ST_CLOSE_WRITE;
         end
@@ -1085,6 +1170,9 @@ always @(posedge clk) begin
         controleSS          = 2'b01;//
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
 
         STATE = ST_CLOSE_WRITE;
         end
@@ -1113,7 +1201,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
-
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
         
         
         STATE = ST_CLOSE_WRITE;
@@ -1144,6 +1234,10 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
+
         STATE = ST_CLOSE_WRITE;
         
         end
@@ -1169,7 +1263,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
-
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
 
         STATE = ST_CLOSE_WRITE;
         end
@@ -1195,6 +1291,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
 
         STATE = ST_CLOSE_WRITE;
 
@@ -1222,7 +1321,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b0;
-
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
         
         
         STATE = ST_LOAD_WAIT;
@@ -1250,6 +1351,9 @@ always @(posedge clk) begin
           controleSS          = 2'b00;
           controleLS          = 2'b00;
           MDR_Write           = 1'b0;
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
 
         STATE = ST_LOAD_WAIT_2;
 
@@ -1276,6 +1380,9 @@ always @(posedge clk) begin
         controleSS          = 2'b00;
         controleLS          = 2'b00;
         MDR_Write           = 1'b1; //
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
 
         case (OPCODE)
           LW: begin
@@ -1312,6 +1419,9 @@ always @(posedge clk) begin
           controleSS          = 2'b00;
           controleLS          = 2'b00; //
           MDR_Write           = 1'b0;
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
 
         STATE = ST_CLOSE_WRITE;
 
@@ -1338,6 +1448,9 @@ always @(posedge clk) begin
           controleSS          = 2'b00;
           controleLS          = 2'b10; //
           MDR_Write           = 1'b0;
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
 
         STATE = ST_CLOSE_WRITE;
 
@@ -1364,6 +1477,9 @@ always @(posedge clk) begin
           controleSS          = 2'b00;
           controleLS          = 2'b01;//
           MDR_Write           = 1'b0;
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
 
         STATE = ST_CLOSE_WRITE;
 
@@ -1416,6 +1532,9 @@ always @(posedge clk) begin
           controleSS          = 2'b00;
           controleLS          = 2'b00;
           MDR_Write           = 1'b0;  
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
 
           STATE = ST_CLOSE_WRITE;
        
@@ -1450,8 +1569,65 @@ always @(posedge clk) begin
           
 
 
+        end 
+
+        ST_MULT_1: begin
+
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b00;
+          Alu_control         = 3'b000;
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 2'b00;
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+
+          STATE = ST_MULT_2;
         end
 
+        ST_MULT_2: begin
+
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b00;
+          Alu_control         = 3'b000;
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 2'b00;
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+
+          STATE = ST_CLOSE_WRITE;
+        end
         
         ST_CLOSE_WRITE: begin
 
@@ -1474,8 +1650,11 @@ always @(posedge clk) begin
           IorD                = 2'b00;
           controleSS          = 2'b00;
           controleLS          = 2'b00;
-          MDR_Write           = 1'b0;
-        
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+
         
         STATE = ST_FETCH_1;
 
