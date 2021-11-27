@@ -124,6 +124,7 @@ reg[5:0] STATE;
     parameter ST_DIVM_4_WAIT = 6'b111011; // 59
     parameter ST_OVERFLOW_3 = 6'b111100; //60
     parameter ST_OVERFLOW_4 = 6'b111101; // 61
+    parameter ST_SRAM       = 6'b111110; //62
     parameter ST_CLOSE_WRITE = 6'b111111;
    
     
@@ -148,6 +149,7 @@ reg[5:0] STATE;
     parameter SW    = 6'b101011;
     parameter J     = 6'b000010;
     parameter JAL   = 6'b000011;
+    parameter SRAM  = 6'b000001;
 
     // Function
     parameter FUNCT_ADD = 6'b100000;
@@ -418,6 +420,8 @@ always @(posedge clk) begin
             JAL: begin
               STATE = ST_JAL_1;
             end
+            SRAM: begin
+              STATE = ST_SRAM;
 
 
           endcase
@@ -2174,6 +2178,37 @@ always @(posedge clk) begin
           ExceptionControl    = 2'b00;
 
           STATE = ST_CLOSE_WRITE;
+        end
+
+        ST_SRAM: begin
+          
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b00;
+          Alu_control         = 3'b000;
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 2'b00;
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
+
+          STATE = ST_CLOSE_WRITE;
+          
         end
 
         
