@@ -103,9 +103,10 @@ reg[5:0] STATE;
     parameter ST_BREAK = 6'b101000  ; // 40
     parameter ST_MFHI = 6'b101001  ; // 41
     parameter ST_MFLO = 6'b101010  ; // 42
-    parameter ST_BREAK = 6'b101011; // 43
     parameter ST_MULT_1 = 6'b101100; // 44
     parameter ST_MULT_2 = 6'b101101; // 45
+    parameter ST_JAL_1 = 6'b101110; // 46
+    parameter ST_JAL_2  = 6'b101111; // 47
     parameter ST_CLOSE_WRITE = 6'b111111;
    
     
@@ -382,6 +383,9 @@ always @(posedge clk) begin
             end
             LH: begin
               STATE = ST_LOAD;
+            end
+            JAL: begin
+              STATE = ST_JAL_1;
             end
 
 
@@ -1628,6 +1632,68 @@ always @(posedge clk) begin
 
           STATE = ST_CLOSE_WRITE;
         end
+        
+        
+        ST_JAL_1: begin
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b0; //
+          AluSrcB             = 2'b00; 
+          Alu_control         = 3'b000; 
+          ALUOutCtrl          = 1'b1; //
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 2'b00;
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+
+        
+        STATE = ST_JAL_2;
+        end
+
+        ST_JAL_2: begin
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b11; //
+          PC_write            = 1'b1; //  
+          EPC_Write           = 1'b0; 
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b1; //
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b00;
+          Alu_control         = 3'b000;
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0101; //
+          PCsource            = 2'b00; //
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+
+        
+        STATE = ST_CLOSE_WRITE;
+
+
+        end
+        
         
         ST_CLOSE_WRITE: begin
 
