@@ -24,6 +24,7 @@ module cpu(
     wire [2:0] Alu_control;
     wire [3:0] MEMtoReg;
     wire [1:0] PCsource;
+    wire [1:0] ExceptionControl;
     wire [1:0] IorD;
     wire [1:0] controleSS;
     wire [1:0] controleLS;
@@ -353,6 +354,11 @@ module cpu(
         Lo_out_mux
     );
 
+    mux_CTRL_Exception Exception_(
+        ExceptionControl,
+        Exception_out,
+    );
+
     // sign extends
 
     sign_extend_16 SE16_(
@@ -397,6 +403,7 @@ module cpu(
         M_writeReg,
         IorD,
         PCsource,
+        ExceptionControl,
         ShiftAmt,
         ShiftSrc,
         AluSrcA,
