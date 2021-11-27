@@ -46,6 +46,7 @@ module cpu(
     wire mult_flag;
     wire div_flag;
     wire Div_0_Excp;
+    wire div_selector;
 
     // fios de dados
 
@@ -95,6 +96,8 @@ module cpu(
     wire [31:0] Lo_out_mux;
     wire [25:0] concatena_out;
     wire [31:0] conc_out;
+    wire [31:0] mux_Div_B_out;
+    wire [31:0] mux_Div_A_out;
     
     
 
@@ -325,7 +328,7 @@ module cpu(
         ShiftAmt,
         B_out,
         OFFSET,
-        MDR_out,
+        MEM_out,
         ShiftAmt_out
     );
 
@@ -366,6 +369,20 @@ module cpu(
     mux_CTRL_Exception Exception_(
         ExceptionControl,
         Exception_out
+    );
+
+    mux_divA mux_Div_A_(
+        div_selector,
+        A_out,
+        MEM_out,
+        mux_Div_A_out
+    );
+
+    mux_divA mux_Div_B_(
+        div_selector,
+        B_out,
+        MDR_out,
+        mux_Div_B_out
     );
 
     // sign extends
@@ -411,6 +428,7 @@ module cpu(
         controleLS,
         mult_flag,
         div_flag,
+        div_selector,
         M_writeReg,
         IorD,
         PCsource,

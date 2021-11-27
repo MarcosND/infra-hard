@@ -26,6 +26,7 @@ module ctrl_unit (
     output reg      [1:0] controleLS,
     output reg             mult_flag,
     output reg             div_flag,
+    output reg             div_selector,
     
     
     //controladores dos muxes
@@ -175,8 +176,6 @@ reg[6:0] STATE;
     parameter FUNCT_BREAK = 6'b001101;
     parameter FUNCT_MFHI = 6'b010000;
     parameter FUNCT_MFLO = 6'b010010;
-
-    //sram
 
 always @(posedge clk) begin
         if (reset || STATE == ST_RESET)begin
@@ -1829,6 +1828,7 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          div_selector        = 1'b0;
           div_flag            = 1'b1; //
 
           STATE = ST_DIV_2;
@@ -1865,6 +1865,7 @@ always @(posedge clk) begin
           Mult_Div            = 1'b1;  //
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
+          div_selector        = 1'b0; //
           ExceptionControl    = 2'b00;
 
           if (ciclos_end_01 == 0) begin
@@ -1895,13 +1896,13 @@ always @(posedge clk) begin
           IR_write            = 1'b0; 
           AB_w                = 1'b0;
           Regwrite            = 1'b0; 
-          AluSrcA             = 1'b0;
+          AluSrcA             = 1'b1; //
           AluSrcB             = 2'b00;
-          Alu_control         = 3'b000;
+          Alu_control         = 3'b000; //
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
           PCsource            = 2'b00;
-          IorD                = 2'b00;
+          IorD                = 2'b11; //
           controleSS          = 2'b00;
           controleLS          = 2'b00;
           MDR_Write           = 1'b0; 
@@ -1925,13 +1926,13 @@ always @(posedge clk) begin
           IR_write            = 1'b0; 
           AB_w                = 1'b0;
           Regwrite            = 1'b0; 
-          AluSrcA             = 1'b0;
+          AluSrcA             = 1'b0; //
           AluSrcB             = 2'b00;
-          Alu_control         = 3'b000;
+          Alu_control         = 3'b000; //
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
           PCsource            = 2'b00;
-          IorD                = 2'b00;
+          IorD                = 2'b11; //
           controleSS          = 2'b00;
           controleLS          = 2'b00;
           MDR_Write           = 1'b0; 
@@ -1939,6 +1940,7 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+
 
           STATE = ST_DIVM_3;
         
@@ -1956,20 +1958,21 @@ always @(posedge clk) begin
           IR_write            = 1'b0; 
           AB_w                = 1'b0;
           Regwrite            = 1'b0; 
-          AluSrcA             = 1'b0;
+          AluSrcA             = 1'b0; //
           AluSrcB             = 2'b00;
-          Alu_control         = 3'b000;
+          Alu_control         = 3'b000; //
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
           PCsource            = 2'b00;
-          IorD                = 2'b00;
+          IorD                = 2'b11; //
           controleSS          = 2'b00;
           controleLS          = 2'b00;
-          MDR_Write           = 1'b0; 
+          MDR_Write           = 1'b1; //
           Mult_Div            = 1'b0;
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+
 
           STATE = ST_DIVM_4;
 
@@ -1987,13 +1990,13 @@ always @(posedge clk) begin
           IR_write            = 1'b0; 
           AB_w                = 1'b0;
           Regwrite            = 1'b0; 
-          AluSrcA             = 1'b0;
+          AluSrcA             = 1'b0; //
           AluSrcB             = 2'b00;
-          Alu_control         = 3'b000;
+          Alu_control         = 3'b000; //
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
           PCsource            = 2'b00;
-          IorD                = 2'b00;
+          IorD                = 2'b11; //
           controleSS          = 2'b00;
           controleLS          = 2'b00;
           MDR_Write           = 1'b0; 
@@ -2001,6 +2004,8 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          div_flag            = 1'b1;
+          div_selector        = 1'b1;
 
           STATE = ST_DIVM_4_WAIT;
 
@@ -2032,8 +2037,10 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          div_flag            = 1'b1;
+          div_selector        = 1'b1;
 
-          STATE = ST_DIVM_2;
+          STATE = ST_DIV_2;
         end
 
         ST_DIV_0_1: begin
