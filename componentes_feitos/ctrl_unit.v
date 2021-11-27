@@ -132,6 +132,7 @@ reg[6:0] STATE;
     parameter ST_SRAM_4       = 7'b1000001; //65
     parameter ST_SRAM_5       = 7'b1000010; //66
     parameter ST_SRAM_6       = 7'b1000011; //67
+    parameter ST_STORE_END     = 7'b1000111;
     parameter ST_CLOSE_WRITE  = 7'b1111111;
    
     
@@ -1210,6 +1211,39 @@ always @(posedge clk) begin
         ShiftAmt            = 2'b00; 
         ShiftControl        = 3'b000; 
         ShiftSrc            = 1'b0;
+        M_writeReg          = 2'b00;
+        PC_write            = 1'b0;  
+        EPC_Write           = 1'b0;
+        MEM_write           = 1'b0;//
+        IR_write            = 1'b0; 
+        AB_w                = 1'b0;
+        Regwrite            = 1'b0; 
+        AluSrcA             = 1'b1; //
+        AluSrcB             = 2'b11; //
+        Alu_control         = 3'b001;//
+        ALUOutCtrl          = 1'b0;//
+        MEMtoReg            = 4'b0000; 
+        PCsource            = 2'b00;
+        IorD                = 2'b10; //
+        controleSS          = 2'b00;
+        controleLS          = 2'b00;
+        MDR_Write           = 1'b0;
+        Mult_Div            = 1'b0;
+        HIWrite             = 1'b0;
+        LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
+
+        STATE = ST_STORE_END;
+        end
+
+        ST_STORE_END: begin
+
+        ShiftAmt            = 2'b00; 
+        ShiftControl        = 3'b000; 
+        ShiftSrc            = 1'b0;
         M_writeReg          = 2'b00;//
         PC_write            = 1'b0;  
         EPC_Write           = 1'b0;
@@ -1227,7 +1261,6 @@ always @(posedge clk) begin
         IorD                = 2'b00; 
         controleSS          = 2'b00;
         controleLS          = 2'b00;
-        MDR_Write           = 1'b1;//
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
@@ -1825,9 +1858,8 @@ always @(posedge clk) begin
           Mult_Div            = 1'b0; // 
           HIWrite             = 1'b0; //
           LOWrite             = 1'b0; //
-          mult_flag           = 1'b1;
+          mult_flag           = 1'b1; //
           ExceptionControl    = 2'b00;
-          mult_flag           = 1'b0;
           div_flag            = 1'b0;
           div_selector        = 1'b0;
 
@@ -1861,7 +1893,6 @@ always @(posedge clk) begin
           LOWrite             = 1'b0;
           mult_flag           = 1'b0;
           ExceptionControl    = 2'b00;
-          mult_flag           = 1'b0;
           div_flag            = 1'b0;
           div_selector        = 1'b0;
 
@@ -1985,9 +2016,7 @@ always @(posedge clk) begin
 
         ST_DIV_2: begin
           
-          if (Div0 == 1'b1) begin
-            STATE = ST_DIV_0_1;
-          end else begin 
+          
           
           div_flag            = 1'b0;
           ShiftAmt            = 2'b00; 
@@ -2031,7 +2060,7 @@ always @(posedge clk) begin
 
           end
 
-        end
+        
 
       end
 

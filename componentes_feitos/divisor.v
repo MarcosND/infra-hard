@@ -11,7 +11,7 @@ module divisor (
 		output reg DIV_0
 	);
 
-  	integer contador = 32;
+  	integer contador = -2;
 	reg [31:0] quociente;
 	reg [31:0] resto;
 	reg [31:0] divisor; 
@@ -25,7 +25,7 @@ module divisor (
     begin
 			
 			resto = 32'b0;
-		  contador = 32;
+		  contador = -2;
 			DIV_END = 1'd0;
 			divisor = 32'b0;
 			HI = 32'd0;
@@ -43,7 +43,7 @@ module divisor (
 				quociente = A;
 
 				resto = 32'b0;
-			contador = 32;
+				contador = 32;
 				DIV_END = 1'd0;
 				HI = 32'd0;
 				LO = 32'd0;
