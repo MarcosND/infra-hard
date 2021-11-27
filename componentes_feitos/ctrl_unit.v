@@ -128,7 +128,7 @@ reg[6:0] STATE;
     parameter ST_SRAM_2       = 7'b0111111; //63
     parameter ST_SRAM_3       = 7'b1000000; //64
     parameter ST_SRAM_4       = 7'b1000001; //65
-    parameter ST_CLOSE_WRITE  = 7'b0111111;
+    parameter ST_CLOSE_WRITE  = 7'b1111111;
    
     
     
