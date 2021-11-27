@@ -2024,6 +2024,9 @@ always @(posedge clk) begin
 
         ST_DIV_2: begin
 
+          if (Div0) begin
+						STATE = ST_DIV_0_1;
+					end
           
           ShiftAmt            = 2'b00; 
           ShiftControl        = 3'b000; 
@@ -2052,17 +2055,7 @@ always @(posedge clk) begin
           ExceptionControl    = 2'b00;
           mult_flag           = 1'b0;
           div_flag            = 1'b0;
-          
-
-          if (Div0) begin
-						state = ST_DIV_0_1;
-					end
-
-          else begin
-            if (div_end)
-          end
-          
-          
+                    
           if (ciclos_end_01 == 0) begin
 
               STATE = ST_DIV_2;  
@@ -2212,7 +2205,7 @@ always @(posedge clk) begin
           div_selector        = 1'b1; //
           mult_flag           = 1'b0;
           
-          STATE = ST_DIVM_4_WAIT;
+          STATE = ST_DIV_2;
 
         end
 
@@ -2238,7 +2231,7 @@ always @(posedge clk) begin
           controleSS          = 2'b00;
           controleLS          = 2'b00;
           MDR_Write           = 1'b0; 
-          Mult_Div            = 1'b0; //
+          Mult_Div            = 1'b0; 
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
