@@ -1,62 +1,85 @@
-module divisor(
+module Div (
+		input wire DIV_START,
     input wire clock,
-    input wire multOrDiv,
-    input wire reset,
+		input wire reset,
     input wire [31:0] A,
-    input wire [31:0] B,
-    output reg [31:0] lo,
-    output reg [31:0] hi,
-    output reg div0
-);
+		input wire [31:0] B,
+		
+    output reg DIV_END,
+		output reg [31:0] HI,
+		output reg [31:0] LO,
+		output wire DIV_O
+	);
 
-reg [31:0] divisor;
-reg [31:0] dividendo;
-reg sinal;
-integer index;
-reg finalizado;
+  integer contador = 32;
+	reg [31:0] quociente;
+	reg [31:0] resto;
+	reg [31:0] divisor; 
+	assign DIV_O = !B;
+	wire [32:0] subtraido = {resto[30:0], quociente[31]} - divisor; 
 
-initial begin
-  finalizado = 0;
-  div0 = 0;
-  sinal = 0;
-end
+	always @(posedge clock) begin
+		
+    if (reset == 1'd1) 
+    
+    begin
+			
+			resto = 32'b0;
+		  contador = 32;
+			DIV_END = 1'd0;
+			divisor = 32'b0;
+			HI[31:0] = 32'd0;
+			LO[31:0] = 32'd0;
+			quociente = 65'b0;
 
-always @(posedge clock) begin
-    if(reset == 1'b1) begin
-      div0 = 1'b0;
-      finalizado = 1'b0;
-      dividendo = 32'b0; 
-      divisor = 32'b0; 
-      lo = 32'b0; 
-      hi = 32'b0; 
-    end
-    else if (B == 32'b0 && multOrDiv == 1)begin
-      div0 = 1'b1;
-    end
-    else if(multOrDiv == 1) begin
-      divisor = B;
-      dividendo = A;
-      if(divisor[31] == 1'b1) begin
-        divisor = ~divisor + 1;
-        if(sinal == 0) begin
-          sinal = 1;
-        end
-      end
-      if(dividendo[31] == 1'b1) begin
-        dividendo = ~dividendo + 1;
-        sinal = 1;
-      end
-    end
-    else if(finalizado == 0) begin
-      for (index = 1; dividendo >= divisor; index= index + 1) begin
-      dividendo = dividendo - divisor;
-      lo = index;
-    end
-       if(sinal == 1) begin
-         lo = ~lo + 1;
-       end
-       hi = dividendo;
-       finalizado = 1;
-end
-end
+		end 
+    
+    else begin
+
+			if (DIV_START == 1'b1) 
+      
+      begin
+				divisor = B;
+				quociente = A;
+
+				resto = 32'b0;
+			contador = 32;
+				DIV_END = 1'd0;
+				HI[31:0] = 32'd0;
+				LO[31:0] = 32'd0;
+			end 
+      
+      else begin
+
+				if (subtraido[32] == 0) begin
+					resto = subtraido[31:0];
+					quociente = {quociente[30:0], 1'b1};
+				end 
+        
+        else 
+        
+        begin
+					resto = {resto[30:0], quociente[31]};
+					quociente = {quociente[30:0], 1'b0};
+				end
+
+				if (contador > 0) 
+        
+        
+        begin
+				  contador = contador -1;
+				end
+
+				else if (contador == 0) 
+        
+        begin
+					HI = resto;
+				contador = -1;
+					LO = quociente;
+					DIV_END = 1'b1;
+				end
+
+			end
+		end
+	end
 endmodule
