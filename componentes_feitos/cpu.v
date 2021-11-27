@@ -360,7 +360,7 @@ module cpu(
 
     mux_CTRL_Exception Exception_(
         ExceptionControl,
-        Exception_out,
+        Exception_out
     );
 
     // sign extends
