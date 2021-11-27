@@ -2257,25 +2257,25 @@ always @(posedge clk) begin
           ShiftSrc            = 1'b0;
           M_writeReg          = 2'b00;
           PC_write            = 1'b0;  
-          EPC_Write           = 1'b0;
+          EPC_Write           = 1'b1; //
           MEM_write           = 1'b0;
           IR_write            = 1'b0; 
           AB_w                = 1'b0;
           Regwrite            = 1'b0; 
-          AluSrcA             = 1'b0;
-          AluSrcB             = 2'b00;
-          Alu_control         = 3'b000;
+          AluSrcA             = 1'b0; //
+          AluSrcB             = 2'b01; //
+          Alu_control         = 3'b010; //
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
           PCsource            = 2'b00;
-          IorD                = 3'b000;
+          IorD                = 3'b010; //
           controleSS          = 2'b00;
           controleLS          = 2'b00;
           MDR_Write           = 1'b0; 
           Mult_Div            = 1'b0;
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
-          ExceptionControl    = 2'b00;
+          ExceptionControl    = 2'b10; //
           mult_flag           = 1'b0;
           div_flag            = 1'b0;
           div_selector        = 1'b0;
@@ -2290,29 +2290,30 @@ always @(posedge clk) begin
           ShiftSrc            = 1'b0;
           M_writeReg          = 2'b00;
           PC_write            = 1'b0;  
-          EPC_Write           = 1'b0;
+          EPC_Write           = 1'b0; //
           MEM_write           = 1'b0;
           IR_write            = 1'b0; 
           AB_w                = 1'b0;
           Regwrite            = 1'b0; 
           AluSrcA             = 1'b0;
-          AluSrcB             = 2'b00;
-          Alu_control         = 3'b000;
+          AluSrcB             = 2'b01; //
+          Alu_control         = 3'b010; //
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
           PCsource            = 2'b00;
-          IorD                = 3'b000;
+          IorD                = 3'b010; //
           controleSS          = 2'b00;
           controleLS          = 2'b00;
           MDR_Write           = 1'b0; 
           Mult_Div            = 1'b0;
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
-          ExceptionControl    = 2'b00;
+          ExceptionControl    = 2'b10; //
           mult_flag           = 1'b0;
           div_flag            = 1'b0;
           div_selector        = 1'b0;
-
+        
+          STATE = ST_OVERFLOW_3;
 
         end
 
