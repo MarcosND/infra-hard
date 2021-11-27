@@ -42,6 +42,7 @@ module cpu(
     wire Gt; 
     wire Lt; 
     wire ciclos_end;
+    wire ciclos_end_01;
     wire mult_flag;
     wire div_flag;
     wire Div_0_Excp;
@@ -249,7 +250,7 @@ module cpu(
         div_flag,
         A_out,
         B_out,
-        ciclos_end,
+        ciclos_end_01,
         div_Hi_out,
         div_Lo_out,
         Div_0_Excp
@@ -426,6 +427,7 @@ module cpu(
         Gt,
         Lt,
         ciclos_end,
+        ciclos_end_01,
         OPCODE,
         OFFSET[5:0]
     );
