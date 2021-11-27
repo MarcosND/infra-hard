@@ -2067,10 +2067,10 @@ always @(posedge clk) begin
           AluSrcA             = 1'b1; //
           AluSrcB             = 2'b00;
           Alu_control         = 3'b000; //
-          ALUOutCtrl          = 1'b0;
+          ALUOutCtrl          = 1'b1; //
           MEMtoReg            = 4'b0000; 
           PCsource            = 2'b00;
-          IorD                = 2'b11; //
+          IorD                = 2'b10; //
           controleSS          = 2'b00;
           controleLS          = 2'b00;
           MDR_Write           = 1'b0; 
