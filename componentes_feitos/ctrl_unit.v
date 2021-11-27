@@ -165,7 +165,10 @@ reg[5:0] STATE;
     parameter FUNCT_JR = 6'b001000;
     parameter FUNCT_MULT 	= 6'b011000;
     parameter FUNCT_DIV	 = 6'b011010;
-    parameter FUNCT_DIVM    = 6'b000101;
+    parameter FUNCT_DIVM  = 6'b000101;
+    parameter FUNCT_BREAK = 6'b001101;
+    parameter FUNCT_MFHI = 6'b010000;
+    parameter FUNCT_MFLO = 6'b010010;
 
     //sram
 
@@ -363,6 +366,15 @@ always @(posedge clk) begin
                 end
                 FUNCT_DIVM: begin
                     STATE = ST_DIVM_1;
+                end
+                FUNCT_BREAK: begin
+                    STATE = ST_BREAK;
+                end
+                FUNCT_MFHI: begin
+                    STATE = ST_MFHI;
+                end
+                FUNCT_MFLO: begin
+                    STATE = ST_MFLO;
                 end
               endcase
             end
@@ -1581,6 +1593,8 @@ always @(posedge clk) begin
           controleLS          = 2'b00;
           MDR_Write           = 1'b0;
           ExceptionControl    = 2'b00;
+
+          STATE = ST_CLOSE_WRITE;
         
 
         end 
