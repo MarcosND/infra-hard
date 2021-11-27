@@ -1,17 +1,17 @@
 module divisor (
-    input wire clock,
+    	input wire clock,
 		input wire reset,
 		input wire DIV_START,
-    input wire [31:0] A,
+    	input wire [31:0] A,
 		input wire [31:0] B,
 		
-    output reg DIV_END,
+    	output reg DIV_END,
 		output reg [31:0] HI,
 		output reg [31:0] LO,
 		output reg DIV_0
 	);
 
-  integer contador = 32;
+  	integer contador = 32;
 	reg [31:0] quociente;
 	reg [31:0] resto;
 	reg [31:0] divisor; 
@@ -74,7 +74,7 @@ module divisor (
         
         begin
 					HI = resto;
-				contador = -1;
+					contador = -1;
 					LO = quociente;
 					DIV_END = 1'b1;
 				end

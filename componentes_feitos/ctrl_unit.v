@@ -50,6 +50,7 @@ module ctrl_unit (
     input wire      Gt,
     input wire      Lt,
     input wire      ciclos_end,
+    input wire      ciclos_end_01,
     
     //Fios de Dados
     input wire [5:0] OPCODE,
@@ -1828,7 +1829,7 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
-          div_flag            = 1'b1;
+          div_flag            = 1'b1; //
 
           STATE = ST_DIV_2;
 
@@ -1866,9 +1867,9 @@ always @(posedge clk) begin
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
 
-          if (ciclos_end == 0) begin
+          if (ciclos_end_01 == 0) begin
 
-              STATE = ST_MULT_2;  
+              STATE = ST_DIV_2;  
 
           end else begin
               HIWrite = 1'b1;
