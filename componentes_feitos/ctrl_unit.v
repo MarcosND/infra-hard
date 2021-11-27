@@ -24,6 +24,7 @@ module ctrl_unit (
     output reg      [3:0] MEMtoReg, 
     output reg      [1:0] controleSS,
     output reg      [1:0] controleLS,
+    output reg             mult_flag,
     //output reg      [1:0] Exception,
 
     
@@ -47,6 +48,7 @@ module ctrl_unit (
     input wire      Eq,
     input wire      Gt,
     input wire      Lt,
+    input wire      ciclos_end,
     
     //Fios de Dados
     input wire [5:0] OPCODE,
@@ -1533,9 +1535,10 @@ always @(posedge clk) begin
           controleSS          = 2'b00;
           controleLS          = 2'b00;
           MDR_Write           = 1'b0; 
-          Mult_Div            = 1'b0;
-          HIWrite             = 1'b0;
-          LOWrite             = 1'b0;
+          Mult_Div            = 1'b0; // 
+          HIWrite             = 1'b0; //
+          LOWrite             = 1'b0; //
+          mult_flag = 1'b1;
 
           STATE = ST_MULT_2;
         end
@@ -1565,8 +1568,20 @@ always @(posedge clk) begin
           Mult_Div            = 1'b0;
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
+          mult_flag           = 1'b0;
 
-          STATE = ST_CLOSE_WRITE;
+          if (ciclos_end == 0) begin
+
+              STATE = ST_MULT_2;  
+
+          end else begin
+              HIWrite = 1'b1;
+              LOWrite = 1'b1;
+
+              STATE = ST_CLOSE_WRITE;
+
+          end
+
         end
         
         ST_CLOSE_WRITE: begin

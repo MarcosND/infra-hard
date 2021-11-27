@@ -40,6 +40,8 @@ module cpu(
     wire Eq; 
     wire Gt; 
     wire Lt; 
+    wire ciclos_end;
+    wire mult_flag;
 
     // fios de dados
 
@@ -64,7 +66,7 @@ module cpu(
     wire [31:0] AluB_out;
     wire [31:0] Exception_out;
     wire [31:0] IorD_out;
-    wire [31:0] Shiftleft_26to28_out;
+    wire [27:0] Shiftleft_26to28_out;
     wire [31:0] EPC_out;
     wire [31:0] PCsource_out;
     wire [31:0] SL2_out;
@@ -230,11 +232,12 @@ module cpu(
     multiplicador MULT_(
         clock,
         reset,
-        Mult_Div,
+        mult_flag,
         A_out,
         B_out,
         mult_Hi_out,
-        mult_Lo_out
+        mult_Lo_out,
+        ciclos_end
     );
 
     divisor DIV_(
@@ -253,6 +256,7 @@ module cpu(
         Shiftleft_26to28_out
 
     );
+
     concatena_26to28 concatena_26to28(
         RT,
         RS,
@@ -394,6 +398,7 @@ module cpu(
         MEMtoReg,
         controleSS,
         controleLS,
+        mult_flag,
         M_writeReg,
         IorD,
         PCsource,
@@ -407,6 +412,7 @@ module cpu(
         Eq,
         Gt,
         Lt,
+        ciclos_end,
         OPCODE,
         OFFSET[5:0]
     );
