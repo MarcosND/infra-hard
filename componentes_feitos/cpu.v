@@ -25,7 +25,7 @@ module cpu(
     wire [3:0] MEMtoReg;
     wire [1:0] PCsource;
     wire [1:0] ExceptionControl;
-    wire [1:0] IorD;
+    wire [2:0] IorD;
     wire [1:0] controleSS;
     wire [1:0] controleLS;
     wire [2:0] ShiftControl;
@@ -312,6 +312,7 @@ module cpu(
         Exception_out,
         ALUOut_out,
         ULA_out,
+        B_out,
         IorD_out
     );
 
