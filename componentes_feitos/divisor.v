@@ -1,21 +1,21 @@
 module divisor (
-		input wire DIV_START,
     input wire clock,
 		input wire reset,
+		input wire DIV_START,
     input wire [31:0] A,
 		input wire [31:0] B,
 		
     output reg DIV_END,
 		output reg [31:0] HI,
 		output reg [31:0] LO,
-		output wire DIV_O
+		output reg DIV_0
 	);
 
   integer contador = 32;
 	reg [31:0] quociente;
 	reg [31:0] resto;
 	reg [31:0] divisor; 
-	assign DIV_O = !B;
+	assign DIV_0 = !B;
 	wire [32:0] subtraido = {resto[30:0], quociente[31]} - divisor; 
 
 	always @(posedge clock) begin
@@ -28,8 +28,8 @@ module divisor (
 		  contador = 32;
 			DIV_END = 1'd0;
 			divisor = 32'b0;
-			HI[31:0] = 32'd0;
-			LO[31:0] = 32'd0;
+			HI = 32'd0;
+			LO = 32'd0;
 			quociente = 65'b0;
 
 		end 
@@ -45,8 +45,8 @@ module divisor (
 				resto = 32'b0;
 			contador = 32;
 				DIV_END = 1'd0;
-				HI[31:0] = 32'd0;
-				LO[31:0] = 32'd0;
+				HI = 32'd0;
+				LO = 32'd0;
 			end 
       
       else begin
@@ -70,7 +70,7 @@ module divisor (
 				  contador = contador -1;
 				end
 
-				else if (contador == 0) 
+				if (contador == 0) 
         
         begin
 					HI = resto;

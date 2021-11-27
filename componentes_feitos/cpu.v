@@ -43,6 +43,8 @@ module cpu(
     wire Lt; 
     wire ciclos_end;
     wire mult_flag;
+    wire div_flag;
+    wire Div_0_Excp;
 
     // fios de dados
 
@@ -244,11 +246,13 @@ module cpu(
     divisor DIV_(
         clock,
         reset,
-        Mult_Div,
+        div_flag,
         A_out,
         B_out,
+        ciclos_end,
         div_Hi_out,
-        div_Lo_out
+        div_Lo_out,
+        Div_0_Excp
     );
 
     
@@ -405,6 +409,7 @@ module cpu(
         controleSS,
         controleLS,
         mult_flag,
+        div_flag,
         M_writeReg,
         IorD,
         PCsource,
@@ -414,6 +419,7 @@ module cpu(
         AluSrcA,
         AluSrcB,
         Overflow,
+        Div_0_Excp,
         Ng,
         Zr,
         Eq,
