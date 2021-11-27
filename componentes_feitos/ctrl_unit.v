@@ -1589,6 +1589,8 @@ always @(posedge clk) begin
           controleLS          = 2'b00;
           MDR_Write           = 1'b0;
           ExceptionControl    = 2'b00;
+
+          STATE = ST_CLOSE_WRITE;
         
 
         end 
