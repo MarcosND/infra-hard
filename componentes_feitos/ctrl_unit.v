@@ -33,6 +33,7 @@ module ctrl_unit (
     output reg [1:0]    M_writeReg,
     output reg [1:0]    IorD,
     output reg [1:0]    PCsource,
+    output reg [1:0]    ExceptionControl,
     output reg [1:0]    ShiftAmt,
     output reg          ShiftSrc,
     output reg          AluSrcA,
@@ -102,9 +103,27 @@ reg[5:0] STATE;
     parameter ST_LW = 6'b100101; // 37
     parameter ST_LH = 6'b100110; // 38
     parameter ST_LB = 6'b100111; // 39, ultimo state adicionar a partir daqui
-    parameter ST_BREAK = 6'b101000;
-    parameter ST_MULT_1 = 6'b101001;
-    parameter ST_MULT_2 = 6'b101010;
+    parameter ST_BREAK = 6'b101000  ; // 40
+    parameter ST_MFHI = 6'b101001  ; // 41
+    parameter ST_MFLO = 6'b101010  ; // 42
+    parameter ST_MULT_1 = 6'b101100; // 44
+    parameter ST_MULT_2 = 6'b101101; // 45
+    parameter ST_JAL_1 = 6'b101110; // 46
+    parameter ST_JAL_2  = 6'b101111; // 47
+    parameter ST_DIV_1  = 6'b110000; //48
+    parameter ST_DIV_2  = 6'b110001; // 49
+    parameter ST_DIV_0_1 = 6'b110010; // 50
+    parameter ST_DIV_0_2 = 6'b110011; // 51
+    parameter ST_OVERFLOW_1 = 6'b110100;// 52
+    parameter ST_OVERFLOW_2 = 6'b110101;// 53
+    parameter ST_DIVM_1 = 6'b110110; // 54
+    parameter ST_DIVM_2 = 6'b110111; // 55
+    parameter ST_DIVM_2_WAIT = 6'b111000; //56
+    parameter ST_DIVM_3  = 6'b111001; // 57
+    parameter ST_DIVM_4  = 6'b111010; // 58
+    parameter ST_DIVM_4_WAIT = 6'b111011; // 59
+    parameter ST_OVERFLOW_3 = 6'b111100; //60
+    parameter ST_OVERFLOW_4 = 6'b111101; // 61
     parameter ST_CLOSE_WRITE = 6'b111111;
    
     
@@ -143,6 +162,9 @@ reg[5:0] STATE;
     parameter FUNCT_RTE = 6'b010011;
     parameter FUNCT_JR = 6'b001000;
     parameter FUNCT_MULT 	= 6'b011000;
+    parameter FUNCT_DIV	 = 6'b011010;
+    parameter FUNCT_DIVM    = 6'b000101;
+
     //sram
 
 always @(posedge clk) begin
@@ -173,6 +195,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
         
         STATE = ST_FETCH_1;
          
@@ -204,6 +227,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
                 
         STATE = ST_FETCH_2;   
             
@@ -234,6 +258,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
         
         STATE = ST_DECODE;
         
@@ -262,6 +287,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
 
         STATE = ST_DECODE_2;
             end
@@ -289,6 +315,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
             
         case (OPCODE)
             R: begin
@@ -328,6 +355,12 @@ always @(posedge clk) begin
                 end
                 FUNCT_MULT: begin
                   STATE = ST_MULT_1;
+                end
+                FUNCT_DIV: begin
+                  STATE = ST_DIV_1;
+                end
+                FUNCT_DIVM: begin
+                    STATE = ST_DIVM_1;
                 end
               endcase
             end
@@ -382,6 +415,9 @@ always @(posedge clk) begin
             LH: begin
               STATE = ST_LOAD;
             end
+            JAL: begin
+              STATE = ST_JAL_1;
+            end
 
 
           endcase
@@ -411,6 +447,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
 
                 STATE = ST_CLOSE_ARITH;
         end
@@ -438,6 +475,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
 
                 STATE = ST_CLOSE_ARITH;
         end
@@ -464,6 +502,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
 
                 STATE = ST_CLOSE_ARITH;
         end
@@ -491,6 +530,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
 
         STATE = ST_CLOSE_WRITE;
 
@@ -519,6 +559,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
 
             case (FUNCTION)
                 FUNCT_SLL: begin
@@ -557,6 +598,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
         
         STATE = ST_SHIFT_END_1;
 
@@ -586,6 +628,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
         
         STATE = ST_SHIFT_END_1;
         
@@ -614,6 +657,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
         
         STATE = ST_SHIFT_END_1;
 
@@ -643,6 +687,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
         
         case (FUNCTION)
                 FUNCT_SRAV: begin
@@ -679,6 +724,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
         
         STATE = ST_SHIFT_END_1;
 
@@ -708,6 +754,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
         
         STATE = ST_SHIFT_END_1;
 
@@ -737,6 +784,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
         
         STATE = ST_CLOSE_WRITE;
 
@@ -765,6 +813,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
 
           STATE = ST_CLOSE_WRITE;
         end
@@ -795,6 +844,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
 
 
       STATE = ST_CLOSE_WRITE;
@@ -827,6 +877,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
 
         if (OPCODE == ADDI) begin  // Faz a verificação pra saber qual caso ir depois da mudança de estado padrão
           STATE = ST_ADDI;
@@ -862,6 +913,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
 
         STATE = ST_CLOSE_WRITE;  
 
@@ -893,6 +945,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
 
         STATE = ST_CLOSE_WRITE;
           
@@ -925,6 +978,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
         
 
         STATE = ST_BRANCH_END;
@@ -954,6 +1008,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
         
         case (OPCODE)
           BEQ: begin
@@ -1016,6 +1071,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
 
         STATE = ST_STORE_WAIT;  
         end
@@ -1045,6 +1101,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
 
         STATE = ST_STORE_WAIT_2;
         end
@@ -1075,6 +1132,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
 
         case(OPCODE)
           SW : begin
@@ -1114,6 +1172,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
 
         STATE = ST_CLOSE_WRITE;
         end
@@ -1143,6 +1202,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
 
         STATE = ST_CLOSE_WRITE;
         end
@@ -1172,6 +1232,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
 
         STATE = ST_CLOSE_WRITE;
         end
@@ -1203,6 +1264,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
         
         
         STATE = ST_CLOSE_WRITE;
@@ -1236,6 +1298,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
 
         STATE = ST_CLOSE_WRITE;
         
@@ -1265,6 +1328,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
 
         STATE = ST_CLOSE_WRITE;
         end
@@ -1293,6 +1357,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
 
         STATE = ST_CLOSE_WRITE;
 
@@ -1323,7 +1388,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
-        
+        ExceptionControl    = 2'b00;
         
         STATE = ST_LOAD_WAIT;
 
@@ -1353,6 +1418,7 @@ always @(posedge clk) begin
           Mult_Div            = 1'b0;
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
 
         STATE = ST_LOAD_WAIT_2;
 
@@ -1382,6 +1448,7 @@ always @(posedge clk) begin
         Mult_Div            = 1'b0;
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
+        ExceptionControl    = 2'b00;
 
         case (OPCODE)
           LW: begin
@@ -1421,6 +1488,7 @@ always @(posedge clk) begin
           Mult_Div            = 1'b0;
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
 
         STATE = ST_CLOSE_WRITE;
 
@@ -1450,6 +1518,7 @@ always @(posedge clk) begin
           Mult_Div            = 1'b0;
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
 
         STATE = ST_CLOSE_WRITE;
 
@@ -1479,6 +1548,7 @@ always @(posedge clk) begin
           Mult_Div            = 1'b0;
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
 
         STATE = ST_CLOSE_WRITE;
 
@@ -1506,9 +1576,69 @@ always @(posedge clk) begin
           controleSS          = 2'b00;
           controleLS          = 2'b00;
           MDR_Write           = 1'b0;
+          ExceptionControl    = 2'b00;
+        
+
+        end 
+        ST_MFHI: begin
+          
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b01; //
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b1; // 
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b00;
+          Alu_control         = 3'b000;
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; //
+          PCsource            = 2'b00;
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0;  
           Mult_Div            = 1'b0;
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
+
+          STATE = ST_CLOSE_WRITE;
+       
+       
+       
+        end
+
+        ST_MFLO: begin
+        
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b01; //
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b1; // 
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b00;
+          Alu_control         = 3'b000;
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0001; //
+          PCsource            = 2'b00;
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          ExceptionControl    = 2'b00; 
+
+          STATE = ST_CLOSE_WRITE;
+          
 
 
         end 
@@ -1539,6 +1669,7 @@ always @(posedge clk) begin
           HIWrite             = 1'b0; //
           LOWrite             = 1'b0; //
           mult_flag = 1'b1;
+          ExceptionControl    = 2'b00;
 
           STATE = ST_MULT_2;
         end
@@ -1569,6 +1700,7 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           mult_flag           = 1'b0;
+          ExceptionControl    = 2'b00;
 
           if (ciclos_end == 0) begin
 
@@ -1583,6 +1715,467 @@ always @(posedge clk) begin
           end
 
         end
+        
+        
+        ST_JAL_1: begin
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b0; //
+          AluSrcB             = 2'b00; 
+          Alu_control         = 3'b000; 
+          ALUOutCtrl          = 1'b1; //
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 2'b00;
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
+
+        
+        STATE = ST_JAL_2;
+        end
+
+        ST_JAL_2: begin
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b11; //
+          PC_write            = 1'b1; //  
+          EPC_Write           = 1'b0; 
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b1; //
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b00;
+          Alu_control         = 3'b000;
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0101; //
+          PCsource            = 2'b00; //
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
+
+        
+        STATE = ST_CLOSE_WRITE;
+
+
+        end
+        
+        ST_DIV_1: begin
+
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b00;
+          Alu_control         = 3'b000;
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 2'b00;
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
+
+          STATE = ST_DIV_2;
+
+        end
+
+        ST_DIV_2: begin
+          
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b00;
+          Alu_control         = 3'b000;
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 2'b00;
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
+
+          STATE = ST_CLOSE_WRITE;
+
+        end
+
+        ST_DIVM_1: begin
+          
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b00;
+          Alu_control         = 3'b000;
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 2'b00;
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
+
+          STATE = ST_DIVM_2;
+        end
+
+        ST_DIVM_2: begin
+
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b00;
+          Alu_control         = 3'b000;
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 2'b00;
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
+
+          STATE = ST_DIVM_3;
+        
+        end
+
+        ST_DIVM_3: begin
+
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b00;
+          Alu_control         = 3'b000;
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 2'b00;
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
+
+          STATE = ST_DIVM_4;
+
+        end
+
+        ST_DIVM_4: begin
+
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b00;
+          Alu_control         = 3'b000;
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 2'b00;
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
+
+          STATE = ST_DIVM_4_WAIT;
+
+        end
+
+        ST_DIVM_4_WAIT: begin
+
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b00;
+          Alu_control         = 3'b000;
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 2'b00;
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
+
+          STATE = ST_DIVM_2;
+        end
+
+        ST_DIV_0_1: begin
+
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b00;
+          Alu_control         = 3'b000;
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 2'b00;
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
+
+          STATE = ST_DIV_0_2;
+        end
+
+        ST_DIV_0_2: begin
+          
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b00;
+          Alu_control         = 3'b000;
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 2'b00;
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
+
+
+        end
+
+        ST_OVERFLOW_1: begin
+
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b00;
+          Alu_control         = 3'b000;
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 2'b00;
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
+
+          STATE = ST_OVERFLOW_2;
+
+        end
+
+        ST_OVERFLOW_2: begin
+
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b00;
+          Alu_control         = 3'b000;
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 2'b00;
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
+
+          STATE = ST_OVERFLOW_3;
+        end
+
+        ST_OVERFLOW_3: begin
+
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b00;
+          Alu_control         = 3'b000;
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 2'b00;
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
+
+          STATE = ST_OVERFLOW_4;
+
+        end
+
+        ST_OVERFLOW_4: begin
+
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b00;
+          Alu_control         = 3'b000;
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 2'b00;
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
+
+          STATE = ST_CLOSE_WRITE;
+        end
+
         
         ST_CLOSE_WRITE: begin
 
@@ -1609,7 +2202,7 @@ always @(posedge clk) begin
           Mult_Div            = 1'b0;
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
-
+          ExceptionControl    = 2'b00;
         
         STATE = ST_FETCH_1;
 

@@ -24,6 +24,7 @@ module cpu(
     wire [2:0] Alu_control;
     wire [3:0] MEMtoReg;
     wire [1:0] PCsource;
+    wire [1:0] ExceptionControl;
     wire [1:0] IorD;
     wire [1:0] controleSS;
     wire [1:0] controleLS;
@@ -266,7 +267,7 @@ module cpu(
 
    concatena_28to32 concatena_28to32(
         PC_out,
-        Shiftleft_26to28_out, // bota aqui a saida do shift left pra 32
+        Shiftleft_26to28_out,
         conc_out 
     );
             
@@ -357,6 +358,11 @@ module cpu(
         Lo_out_mux
     );
 
+    mux_CTRL_Exception Exception_(
+        ExceptionControl,
+        Exception_out,
+    );
+
     // sign extends
 
     sign_extend_16 SE16_(
@@ -402,6 +408,7 @@ module cpu(
         M_writeReg,
         IorD,
         PCsource,
+        ExceptionControl,
         ShiftAmt,
         ShiftSrc,
         AluSrcA,
