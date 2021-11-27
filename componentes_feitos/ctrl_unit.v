@@ -58,73 +58,77 @@ module ctrl_unit (
 
 //variaveis usadas
 
-reg[5:0] STATE;
+reg[6:0] STATE;
 
 // Parametros (Constantes)
 
     //Estados principais da maquina
-    parameter ST_RESET = 6'b000000;    
-    parameter ST_FETCH_1 = 6'b000001;
-    parameter ST_FETCH_2 = 6'b000010;
-    parameter ST_DECODE = 6'b000011;
-    parameter ST_DECODE_2 = 6'b000100;
-    parameter ST_ADD_1 = 6'b000101;
-    parameter ST_SUB = 6'b000110;
-    parameter ST_AND = 6'b000111;
-    parameter ST_CLOSE_ARITH = 6'b001000;
-    parameter ST_SHIFT_WSHAMT = 6'b001001;
-    parameter ST_SHIFT_NSHAMT = 6'b001110;
-    parameter ST_SLL = 6'b001010;
-    parameter ST_SRA = 6'b001011;
-    parameter ST_SRL = 6'b001100;
-    parameter ST_SRAV = 6'b001111;
-    parameter ST_SLLV = 6'b010000;
-    parameter ST_SHIFT_END_1 = 6'b001101;
-    parameter ST_SLT = 6'b010001;
-    parameter ST_RTE = 6'b010010;
-    parameter ST_ADDI_ADDIU = 6'b010011;
-    parameter ST_ADDI = 6'b010100; 
-    parameter ST_ADDIU = 6'b010101;
-    parameter ST_BRANCH_START = 6'b010110;
-    parameter ST_BRANCH_END = 6'b010111; // 23
-    parameter ST_STORE = 6'b011000;
-    parameter ST_STORE_WAIT = 6'b011001;
-    parameter ST_STORE_WAIT_2 = 6'b011010; // 26
-    parameter ST_SW = 6'b011011;
-    parameter ST_SH = 6'b011100;
-    parameter ST_SB = 6'b011101; // 29
-    parameter ST_LUI = 6'b011110; // 30
-    parameter ST_JR = 6'b011111; // 31
-    parameter ST_J = 6'b100000; // 32
-    parameter ST_SLTI = 6'b100001 ; // 33
-    parameter ST_LOAD = 6'b100010; // 34
-    parameter ST_LOAD_WAIT = 6'b100011; // 35
-    parameter ST_LOAD_WAIT_2 = 6'b100100; // 36
-    parameter ST_LW = 6'b100101; // 37
-    parameter ST_LH = 6'b100110; // 38
-    parameter ST_LB = 6'b100111; // 39, ultimo state adicionar a partir daqui
-    parameter ST_BREAK = 6'b101000  ; // 40
-    parameter ST_MFHI = 6'b101001  ; // 41
-    parameter ST_MFLO = 6'b101010  ; // 42
-    parameter ST_MULT_1 = 6'b101100; // 44
-    parameter ST_MULT_2 = 6'b101101; // 45
-    parameter ST_JAL_1 = 6'b101110; // 46
-    parameter ST_JAL_2  = 6'b101111; // 47
-    parameter ST_DIV_1  = 6'b110000; //48
-    parameter ST_DIV_2  = 6'b110001; // 49
-    parameter ST_DIV_0_1 = 6'b110010; // 50
-    parameter ST_DIV_0_2 = 6'b110011; // 51
-    parameter ST_OVERFLOW_1 = 6'b110100;// 52
-    parameter ST_OVERFLOW_2 = 6'b110101;// 53
-    parameter ST_DIVM_1 = 6'b110110; // 54
-    parameter ST_DIVM_2 = 6'b110111; // 55
-    parameter ST_DIVM_2_WAIT = 6'b111000; //56
-    parameter ST_DIVM_3  = 6'b111001; // 57
-    parameter ST_DIVM_4  = 6'b111010; // 58
-    parameter ST_DIVM_4_WAIT = 6'b111011; // 59
-    parameter ST_OVERFLOW_3 = 6'b111100; //60
-    parameter ST_OVERFLOW_4 = 6'b111101; // 61
-    parameter ST_CLOSE_WRITE = 6'b111111;
+    parameter ST_RESET        = 7'b0000000;    
+    parameter ST_FETCH_1      = 7'b0000001;
+    parameter ST_FETCH_2      = 7'b0000010;
+    parameter ST_DECODE       = 7'b0000011;
+    parameter ST_DECODE_2     = 7'b0000100;
+    parameter ST_ADD_1        = 7'b0000101;
+    parameter ST_SUB          = 7'b0000110;
+    parameter ST_AND          = 7'b0000111;
+    parameter ST_CLOSE_ARITH  = 7'b0001000;
+    parameter ST_SHIFT_WSHAMT = 7'b0001001;
+    parameter ST_SHIFT_NSHAMT = 7'b0001110;
+    parameter ST_SLL          = 7'b0001010;
+    parameter ST_SRA          = 7'b0001011;
+    parameter ST_SRL          = 7'b0001100;
+    parameter ST_SRAV         = 7'b0001111;
+    parameter ST_SLLV         = 7'b0010000;
+    parameter ST_SHIFT_END_1  = 7'b0001101;
+    parameter ST_SLT          = 7'b0010001;
+    parameter ST_RTE          = 7'b0010010;
+    parameter ST_ADDI_ADDIU   = 7'b0010011;
+    parameter ST_ADDI         = 7'b0010100; 
+    parameter ST_ADDIU        = 7'b0010101;
+    parameter ST_BRANCH_START = 7'b0010110;
+    parameter ST_BRANCH_END   = 7'b0010111; // 23
+    parameter ST_STORE        = 7'b0011000;
+    parameter ST_STORE_WAIT   = 7'b0011001;
+    parameter ST_STORE_WAIT_2 = 7'b0011010; // 26
+    parameter ST_SW           = 7'b0011011;
+    parameter ST_SH           = 7'b0011100;
+    parameter ST_SB           = 7'b0011101; // 29
+    parameter ST_LUI          = 7'b0011110; // 30
+    parameter ST_JR           = 7'b0011111; // 31
+    parameter ST_J            = 7'b0100000; // 32
+    parameter ST_SLTI         = 7'b0100001; // 33
+    parameter ST_LOAD         = 7'b0100010; // 34
+    parameter ST_LOAD_WAIT    = 7'b0100011; // 35
+    parameter ST_LOAD_WAIT_2  = 7'b0100100; // 36
+    parameter ST_LW           = 7'b0100101; // 37
+    parameter ST_LH           = 7'b0100110; // 38
+    parameter ST_LB           = 7'b0100111; // 39, ultimo state adicionar a partir daqui
+    parameter ST_BREAK        = 7'b0101000; // 40
+    parameter ST_MFHI         = 7'b0101001; // 41
+    parameter ST_MFLO         = 7'b0101010; // 42
+    parameter ST_MULT_1       = 7'b0101100; // 44
+    parameter ST_MULT_2       = 7'b0101101; // 45
+    parameter ST_JAL_1        = 7'b0101110; // 46
+    parameter ST_JAL_2        = 7'b0101111; // 47
+    parameter ST_DIV_1        = 7'b0110000; //48
+    parameter ST_DIV_2        = 7'b0110001; // 49
+    parameter ST_DIV_0_1      = 7'b0110010; // 50
+    parameter ST_DIV_0_2      = 7'b0110011; // 51
+    parameter ST_OVERFLOW_1   = 7'b0110100;// 52
+    parameter ST_OVERFLOW_2   = 7'b0110101;// 53
+    parameter ST_DIVM_1       = 7'b0110110; // 54
+    parameter ST_DIVM_2       = 7'b0110111; // 55
+    parameter ST_DIVM_2_WAIT  = 7'b0111000; //56
+    parameter ST_DIVM_3       = 7'b0111001; // 57
+    parameter ST_DIVM_4       = 7'b0111010; // 58
+    parameter ST_DIVM_4_WAIT  = 7'b0111011; // 59
+    parameter ST_OVERFLOW_3   = 7'b0111100; //60
+    parameter ST_OVERFLOW_4   = 7'b0111101; // 61
+    parameter ST_SRAM_1       = 7'b0111110; //62
+    parameter ST_SRAM_2       = 7'b0111111; //63
+    parameter ST_SRAM_3       = 7'b1000000; //64
+    parameter ST_SRAM_4       = 7'b1000001; //65
+    parameter ST_CLOSE_WRITE  = 7'b1111111;
    
     
     
@@ -148,6 +152,7 @@ reg[5:0] STATE;
     parameter SW    = 6'b101011;
     parameter J     = 6'b000010;
     parameter JAL   = 6'b000011;
+    parameter SRAM  = 6'b000001;
 
     // Function
     parameter FUNCT_ADD = 6'b100000;
@@ -430,7 +435,9 @@ always @(posedge clk) begin
             JAL: begin
               STATE = ST_JAL_1;
             end
-
+            SRAM: begin
+              STATE = ST_SRAM_1;
+            end
 
           endcase
             
@@ -617,7 +624,7 @@ always @(posedge clk) begin
         end
 
         ST_SRA: begin
-               //Define os sinais, vai zerar tudo
+               
         ShiftAmt            = 2'b00; //
         ShiftControl        = 3'b100; // 
         ShiftSrc            = 1'b0; //
@@ -2207,6 +2214,131 @@ always @(posedge clk) begin
 
           STATE = ST_CLOSE_WRITE;
         end
+
+        ST_SRAM_1: begin
+          
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b1; //
+          AluSrcB             = 2'b11; //
+          Alu_control         = 3'b001; //
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 2'b00;
+          IorD                = 2'b01; //
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
+
+          STATE = ST_SRAM_2;
+          
+        end
+        ST_SRAM_2: begin
+          
+          ShiftAmt            = 2'b10; //
+          ShiftControl        = 3'b001; //
+          ShiftSrc            = 1'b1; //
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b00;
+          Alu_control         = 3'b000;
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 2'b00;
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
+
+          STATE = ST_SRAM_3;
+          
+        end
+
+        ST_SRAM_3: begin
+          
+          ShiftAmt            = 2'b0; 
+          ShiftControl        = 3'b01; // 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b00;
+          Alu_control         = 3'b000;
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 2'b00;
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
+
+          STATE = ST_SRAM_4;
+          
+        end
+
+        ST_SRAM_4: begin
+          
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00; //
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b1; // 
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b00;
+          Alu_control         = 3'b000;
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0110; //
+          PCsource            = 2'b00;
+          IorD                = 2'b00;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
+
+          STATE = ST_CLOSE_WRITE;
+
+        end
+
+
 
         
         ST_CLOSE_WRITE: begin
