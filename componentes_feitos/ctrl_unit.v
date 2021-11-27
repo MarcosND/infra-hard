@@ -206,6 +206,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
         
         STATE = ST_FETCH_1;
          
@@ -238,6 +241,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
                 
         STATE = ST_FETCH_2;   
             
@@ -269,6 +275,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
         
         STATE = ST_DECODE;
         
@@ -298,6 +307,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
 
         STATE = ST_DECODE_2;
             end
@@ -326,6 +338,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
             
         case (OPCODE)
             R: begin
@@ -469,6 +484,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
 
                 STATE = ST_CLOSE_ARITH;
         end
@@ -497,6 +515,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
 
                 STATE = ST_CLOSE_ARITH;
         end
@@ -524,6 +545,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
 
                 STATE = ST_CLOSE_ARITH;
         end
@@ -552,6 +576,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
 
         STATE = ST_CLOSE_WRITE;
 
@@ -581,6 +608,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
 
             case (FUNCTION)
                 FUNCT_SLL: begin
@@ -620,6 +650,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
         
         STATE = ST_SHIFT_END_1;
 
@@ -650,6 +683,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
         
         STATE = ST_SHIFT_END_1;
         
@@ -679,6 +715,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
         
         STATE = ST_SHIFT_END_1;
 
@@ -709,6 +748,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
         
         case (FUNCTION)
                 FUNCT_SRAV: begin
@@ -746,6 +788,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
         
         STATE = ST_SHIFT_END_1;
 
@@ -776,6 +821,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
         
         STATE = ST_SHIFT_END_1;
 
@@ -806,6 +854,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
         
         STATE = ST_CLOSE_WRITE;
 
@@ -835,6 +886,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
 
           STATE = ST_CLOSE_WRITE;
         end
@@ -866,6 +920,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
 
 
       STATE = ST_CLOSE_WRITE;
@@ -899,6 +956,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
 
         if (OPCODE == ADDI) begin  // Faz a verificação pra saber qual caso ir depois da mudança de estado padrão
           STATE = ST_ADDI;
@@ -935,6 +995,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
 
         STATE = ST_CLOSE_WRITE;  
 
@@ -967,6 +1030,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
 
         STATE = ST_CLOSE_WRITE;
           
@@ -1000,6 +1066,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
         
 
         STATE = ST_BRANCH_END;
@@ -1030,6 +1099,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
         
         case (OPCODE)
           BEQ: begin
@@ -1093,6 +1165,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
 
         STATE = ST_STORE_WAIT;  
         end
@@ -1123,6 +1198,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
 
         STATE = ST_STORE_WAIT_2;
         end
@@ -1154,6 +1232,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
 
         case(OPCODE)
           SW : begin
@@ -1194,6 +1275,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
 
         STATE = ST_CLOSE_WRITE;
         end
@@ -1224,6 +1308,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
 
         STATE = ST_CLOSE_WRITE;
         end
@@ -1254,6 +1341,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
 
         STATE = ST_CLOSE_WRITE;
         end
@@ -1286,6 +1376,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
         
         
         STATE = ST_CLOSE_WRITE;
@@ -1320,6 +1413,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
 
         STATE = ST_CLOSE_WRITE;
         
@@ -1350,6 +1446,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
 
         STATE = ST_CLOSE_WRITE;
         end
@@ -1379,6 +1478,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
 
         STATE = ST_CLOSE_WRITE;
 
@@ -1410,6 +1512,9 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
         
         STATE = ST_LOAD_WAIT;
 
@@ -1440,6 +1545,9 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
 
         STATE = ST_LOAD_WAIT_2;
 
@@ -1470,6 +1578,10 @@ always @(posedge clk) begin
         HIWrite             = 1'b0;
         LOWrite             = 1'b0;
         ExceptionControl    = 2'b00;
+        mult_flag           = 1'b0;
+        div_flag            = 1'b0;
+        div_selector        = 1'b0;
+
 
         case (OPCODE)
           LW: begin
@@ -1510,6 +1622,11 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
+
+
 
         STATE = ST_CLOSE_WRITE;
 
@@ -1540,6 +1657,10 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
+
 
         STATE = ST_CLOSE_WRITE;
 
@@ -1570,6 +1691,10 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
+
 
         STATE = ST_CLOSE_WRITE;
 
@@ -1598,6 +1723,9 @@ always @(posedge clk) begin
           controleLS          = 2'b00;
           MDR_Write           = 1'b0;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
 
           STATE = ST_CLOSE_WRITE;
         
@@ -1629,6 +1757,9 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
 
           STATE = ST_CLOSE_WRITE;
        
@@ -1659,6 +1790,9 @@ always @(posedge clk) begin
           controleLS          = 2'b00;
           MDR_Write           = 1'b0; 
           ExceptionControl    = 2'b00; 
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
 
           STATE = ST_CLOSE_WRITE;
           
@@ -1691,8 +1825,11 @@ always @(posedge clk) begin
           Mult_Div            = 1'b0; // 
           HIWrite             = 1'b0; //
           LOWrite             = 1'b0; //
-          mult_flag = 1'b1;
+          mult_flag           = 1'b1;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
 
           STATE = ST_MULT_2;
         end
@@ -1724,6 +1861,9 @@ always @(posedge clk) begin
           LOWrite             = 1'b0;
           mult_flag           = 1'b0;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
 
           if (ciclos_end == 0) begin
 
@@ -1765,6 +1905,9 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
 
         
         STATE = ST_JAL_2;
@@ -1795,6 +1938,9 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
 
         
         STATE = ST_CLOSE_WRITE;
@@ -1830,6 +1976,8 @@ always @(posedge clk) begin
           ExceptionControl    = 2'b00;
           div_selector        = 1'b0;
           div_flag            = 1'b1; //
+          mult_flag           = 1'b0;
+          
 
           STATE = ST_DIV_2;
 
@@ -1867,6 +2015,9 @@ always @(posedge clk) begin
           LOWrite             = 1'b0;
           div_selector        = 1'b0; //
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          
 
           if (ciclos_end_01 == 0) begin
 
@@ -1910,6 +2061,9 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
 
           STATE = ST_DIVM_2;
         end
@@ -1940,6 +2094,9 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
 
 
           STATE = ST_DIVM_3;
@@ -1972,6 +2129,9 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
 
 
           STATE = ST_DIVM_4;
@@ -2004,9 +2164,10 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
-          div_flag            = 1'b1; //
-          div_selector        = 1'b1; //
-
+          div_flag            = 1'b1;
+          div_selector        = 1'b1;
+          mult_flag           = 1'b0;
+          
           STATE = ST_DIVM_4_WAIT;
 
         end
@@ -2039,6 +2200,8 @@ always @(posedge clk) begin
           ExceptionControl    = 2'b00;
           div_flag            = 1'b1;
           div_selector        = 1'b1;
+          mult_flag           = 1'b0;
+          
 
           STATE = ST_DIV_2;
         end
@@ -2069,6 +2232,9 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
 
           STATE = ST_DIV_0_2;
         end
@@ -2099,6 +2265,9 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
 
 
         end
@@ -2129,6 +2298,9 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
 
           STATE = ST_OVERFLOW_2;
 
@@ -2160,6 +2332,9 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
 
           STATE = ST_OVERFLOW_3;
         end
@@ -2190,6 +2365,9 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
 
           STATE = ST_OVERFLOW_4;
 
@@ -2221,6 +2399,9 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
 
           STATE = ST_CLOSE_WRITE;
         end
@@ -2251,6 +2432,9 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
 
           STATE = ST_SRAM_2;
           
@@ -2281,6 +2465,9 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
 
           STATE = ST_SRAM_3;
           
@@ -2312,6 +2499,9 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
 
           STATE = ST_SRAM_4;
           
@@ -2343,6 +2533,9 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
 
           STATE = ST_SRAM_5;
 
@@ -2374,6 +2567,9 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
 
           STATE = ST_SRAM_6;
 
@@ -2404,6 +2600,9 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
 
           STATE = ST_CLOSE_WRITE;
 
@@ -2441,6 +2640,9 @@ always @(posedge clk) begin
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
         
         STATE = ST_FETCH_1;
 
