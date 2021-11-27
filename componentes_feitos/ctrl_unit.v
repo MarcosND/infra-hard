@@ -25,8 +25,7 @@ module ctrl_unit (
     output reg      [1:0] controleSS,
     output reg      [1:0] controleLS,
     output reg             mult_flag,
-    //output reg      [1:0] Exception,
-
+    output reg             div_flag,
     
     
     //controladores dos muxes
@@ -44,6 +43,7 @@ module ctrl_unit (
     
     //Flags
     input wire      Overflow,
+    input wire      Div0,
     input wire      Ng,
     input wire      Zr,
     input wire      Eq,
@@ -1824,10 +1824,11 @@ always @(posedge clk) begin
           controleSS          = 2'b00;
           controleLS          = 2'b00;
           MDR_Write           = 1'b0; 
-          Mult_Div            = 1'b0;
+          Mult_Div            = 1'b1; //
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
+          div_flag            = 1'b1;
 
           STATE = ST_DIV_2;
 
@@ -1835,6 +1836,11 @@ always @(posedge clk) begin
 
         ST_DIV_2: begin
           
+          if (Div0 == 1'b1) begin
+            STATE = ST_DIV_0_1;
+          end else begin 
+          
+          div_flag            = 1'b0;
           ShiftAmt            = 2'b00; 
           ShiftControl        = 3'b000; 
           ShiftSrc            = 1'b0;
@@ -1855,14 +1861,26 @@ always @(posedge clk) begin
           controleSS          = 2'b00;
           controleLS          = 2'b00;
           MDR_Write           = 1'b0; 
-          Mult_Div            = 1'b0;
+          Mult_Div            = 1'b1;  //
           HIWrite             = 1'b0;
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
 
-          STATE = ST_CLOSE_WRITE;
+          if (ciclos_end == 0) begin
+
+              STATE = ST_MULT_2;  
+
+          end else begin
+              HIWrite = 1'b1;
+              LOWrite = 1'b1;
+
+              STATE = ST_CLOSE_WRITE;
+
+          end
 
         end
+
+      end
 
         ST_DIVM_1: begin
           
