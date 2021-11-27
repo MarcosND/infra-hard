@@ -128,6 +128,8 @@ reg[6:0] STATE;
     parameter ST_SRAM_2       = 7'b0111111; //63
     parameter ST_SRAM_3       = 7'b1000000; //64
     parameter ST_SRAM_4       = 7'b1000001; //65
+    parameter ST_SRAM_5       = 7'b1000010; //66
+    parameter ST_SRAM_6       = 7'b1000011; //67
     parameter ST_CLOSE_WRITE  = 7'b1111111;
    
     
@@ -2215,7 +2217,7 @@ always @(posedge clk) begin
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
           PCsource            = 2'b00;
-          IorD                = 2'b01; //
+          IorD                = 2'b11; //
           controleSS          = 2'b00;
           controleLS          = 2'b00;
           MDR_Write           = 1'b0; 
@@ -2228,6 +2230,68 @@ always @(posedge clk) begin
           
         end
         ST_SRAM_2: begin
+          //WAIT
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b1; //
+          AluSrcB             = 2'b11; //
+          Alu_control         = 3'b001; //
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 2'b00;
+          IorD                = 2'b11; //
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
+
+          STATE = ST_SRAM_3;
+          
+        end
+
+        ST_SRAM_3: begin
+          //wait
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b1; //
+          AluSrcB             = 2'b11; //
+          Alu_control         = 3'b001; //
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 2'b00;
+          IorD                = 2'b11; //
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+          ExceptionControl    = 2'b00;
+
+          STATE = ST_SRAM_4;
+          
+        end
+
+        ST_SRAM_4: begin
           
           ShiftAmt            = 2'b10; //
           ShiftControl        = 3'b001; //
@@ -2254,14 +2318,14 @@ always @(posedge clk) begin
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
 
-          STATE = ST_SRAM_3;
-          
+          STATE = ST_SRAM_5;
+
         end
 
-        ST_SRAM_3: begin
+         ST_SRAM_5: begin
           
           ShiftAmt            = 2'b0; 
-          ShiftControl        = 3'b01; // 
+          ShiftControl        = 3'b100; // 
           ShiftSrc            = 1'b0;
           M_writeReg          = 2'b00;
           PC_write            = 1'b0;  
@@ -2285,12 +2349,11 @@ always @(posedge clk) begin
           LOWrite             = 1'b0;
           ExceptionControl    = 2'b00;
 
-          STATE = ST_SRAM_4;
-          
+          STATE = ST_SRAM_6;
+
         end
 
-        ST_SRAM_4: begin
-          
+        ST_SRAM_6: begin
           ShiftAmt            = 2'b00; 
           ShiftControl        = 3'b000; 
           ShiftSrc            = 1'b0;
@@ -2317,6 +2380,9 @@ always @(posedge clk) begin
           ExceptionControl    = 2'b00;
 
           STATE = ST_CLOSE_WRITE;
+
+
+
 
         end
 
