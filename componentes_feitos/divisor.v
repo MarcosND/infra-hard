@@ -1,4 +1,4 @@
-module Div (
+module divisor (
 		input wire DIV_START,
     input wire clock,
 		input wire reset,
