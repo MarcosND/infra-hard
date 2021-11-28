@@ -23,7 +23,7 @@ module cpu(
     wire MDR_Write;
     wire [2:0] Alu_control;
     wire [3:0] MEMtoReg;
-    wire [1:0] PCsource;
+    wire [2:0] PCsource;
     wire [1:0] ExceptionControl;
     wire [2:0] IorD;
     wire [1:0] controleSS;
@@ -81,6 +81,7 @@ module cpu(
     wire [31:0] LO_out;
     wire [31:0] SE1_32_out;
     wire [31:0] SL16_out;
+    wire [31:0] SE8_32_out;
 
     wire [31:0] MDR_out;
     wire [31:0] MEMtoReg_out;
@@ -155,7 +156,7 @@ module cpu(
         clock,
         reset,
         EPC_Write,
-        PC_out,
+        ULA_out,
         EPC_out
     );
 
@@ -322,6 +323,7 @@ module cpu(
         EPC_out,
         ULA_out,
         ALUOut_out,
+        SE8_32_out,
         PCsource_out
     );
 
@@ -396,6 +398,11 @@ module cpu(
     sign_extend_1to32 SE1_(
         Lt,
         SE1_32_out
+    );
+
+    sign_extend_8to32 SE8_(
+        MEM_out,
+        SE8_32_out
     );
 
     shift_left_2 SL2_(

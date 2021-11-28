@@ -32,7 +32,7 @@ module ctrl_unit (
     //controladores dos muxes
     output reg [1:0]    M_writeReg,
     output reg [2:0]    IorD,
-    output reg [1:0]    PCsource,
+    output reg [2:0]    PCsource,
     output reg [1:0]    ExceptionControl, // 
     output reg [1:0]    ShiftAmt,
     output reg          ShiftSrc,
@@ -116,6 +116,8 @@ reg[6:0] STATE;
     parameter ST_DIV_2        = 7'b0110001; // 49
     parameter ST_DIV_0_1      = 7'b0110010; // 50
     parameter ST_DIV_0_2      = 7'b0110011; // 51
+    parameter ST_DIV_0_2_WAIT = 7'b1111001;
+    parameter ST_DIV_0_3      = 7'b1100111;
     parameter ST_OVERFLOW_1   = 7'b0110100;// 52
     parameter ST_OVERFLOW_2   = 7'b0110101;// 53
     parameter ST_DIVM_1       = 7'b0110110; // 54
@@ -194,6 +196,7 @@ always @(posedge clk) begin
         M_writeReg          = 2'b10; 
         PC_write            = 1'b0;
         MEM_write           = 1'b0;
+        EPC_Write           = 1'b0;
         IR_write            = 1'b0;
         AB_w                = 1'b0;
         Regwrite            = 1'b1;
@@ -202,7 +205,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b000;
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b1000;
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b000;
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -228,6 +231,7 @@ always @(posedge clk) begin
         ShiftSrc            = 1'b0;
         M_writeReg          = 2'b00; 
         PC_write            = 1'b0; 
+        EPC_Write           = 1'b0;
         MEM_write           = 1'b0;
         IR_write            = 1'b0;
         AB_w                = 1'b0;
@@ -237,7 +241,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b001; //
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0000; //
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b000;  
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -263,6 +267,7 @@ always @(posedge clk) begin
         M_writeReg          = 2'b00;
         PC_write            = 1'b1; // 
         MEM_write           = 1'b0;
+        EPC_Write           = 1'b0;
         IR_write            = 1'b1; //
         AB_w                = 1'b0;
         Regwrite            = 1'b0; 
@@ -271,7 +276,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b001;
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b10; //
+        PCsource            = 3'b010; //
         IorD                = 3'b000; 
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -296,6 +301,7 @@ always @(posedge clk) begin
         PC_write            = 1'b0;  //
         MEM_write           = 1'b0;
         IR_write            = 1'b0; //
+        EPC_Write           = 1'b0;
         AB_w                = 1'b1; //
         Regwrite            = 1'b0; 
         AluSrcA             = 1'b0; //
@@ -303,7 +309,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b001; //
         ALUOutCtrl          = 1'b1; //
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b00; //
+        PCsource            = 3'b000; //
         IorD                = 3'b000; 
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -327,6 +333,7 @@ always @(posedge clk) begin
         PC_write            = 1'b0;  
         MEM_write           = 1'b0;
         IR_write            = 1'b0; 
+        EPC_Write           = 1'b0;
         AB_w                = 1'b0; 
         Regwrite            = 1'b0; 
         AluSrcA             = 1'b0; //
@@ -334,7 +341,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b000; 
         ALUOutCtrl          = 1'b0; //
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b00; 
+        PCsource            = 3'b000; 
         IorD                = 3'b000; 
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -476,6 +483,7 @@ always @(posedge clk) begin
         M_writeReg          = 2'b00;
         PC_write            = 1'b0;  
         MEM_write           = 1'b0;
+        EPC_Write           = 1'b0;
         IR_write            = 1'b0; 
         AB_w                = 1'b0;
         Regwrite            = 1'b0; 
@@ -484,7 +492,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b001;
         ALUOutCtrl          = 1'b1; // 
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b000; 
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -506,6 +514,7 @@ always @(posedge clk) begin
         ShiftSrc            = 1'b0;
         M_writeReg          = 2'b00;
         PC_write            = 1'b0;  
+        EPC_Write           = 1'b0;
         MEM_write           = 1'b0;
         IR_write            = 1'b0; 
         AB_w                = 1'b0;
@@ -515,7 +524,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b010; //
         ALUOutCtrl          = 1'b1; //
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b000; 
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -538,6 +547,7 @@ always @(posedge clk) begin
         PC_write            = 1'b0;  
         MEM_write           = 1'b0;
         IR_write            = 1'b0; 
+        EPC_Write           = 1'b0;
         AB_w                = 1'b0;
         Regwrite            = 1'b0; 
         AluSrcA             = 1'b1; //
@@ -545,7 +555,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b011; //
         ALUOutCtrl          = 1'b1; //
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b000; 
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -570,13 +580,14 @@ always @(posedge clk) begin
         MEM_write           = 1'b0;
         IR_write            = 1'b0; 
         AB_w                = 1'b0;
+        EPC_Write           = 1'b0;
         Regwrite            = 1'b1; //
         AluSrcA             = 1'b0; //
         AluSrcB             = 2'b00; 
         Alu_control         = 3'b000; //
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0101; //
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b000; 
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -600,6 +611,7 @@ always @(posedge clk) begin
         M_writeReg          = 2'b00; 
         PC_write            = 1'b0;  
         MEM_write           = 1'b0;
+        EPC_Write           = 1'b0;
         IR_write            = 1'b0; 
         AB_w                = 1'b0;
         Regwrite            = 1'b0; 
@@ -608,7 +620,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b000; 
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b000; 
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -646,11 +658,12 @@ always @(posedge clk) begin
         AB_w                = 1'b0;
         Regwrite            = 1'b0; 
         AluSrcA             = 1'b0; 
+        EPC_Write           = 1'b0;
         AluSrcB             = 2'b00; 
         Alu_control         = 3'b000;
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b000; 
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -674,6 +687,7 @@ always @(posedge clk) begin
         ShiftSrc            = 1'b0; //
         M_writeReg          = 2'b00;
         PC_write            = 1'b0;  
+        EPC_Write           = 1'b0;
         MEM_write           = 1'b0;
         IR_write            = 1'b0; 
         AB_w                = 1'b0;
@@ -683,7 +697,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b000;
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b000; 
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -711,11 +725,12 @@ always @(posedge clk) begin
         AB_w                = 1'b0;
         Regwrite            = 1'b0; 
         AluSrcA             = 1'b0; 
+        EPC_Write           = 1'b0;
         AluSrcB             = 2'b00; 
         Alu_control         = 3'b000;
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b000; 
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -742,13 +757,14 @@ always @(posedge clk) begin
         MEM_write           = 1'b0;
         IR_write            = 1'b0; 
         AB_w                = 1'b0;
+        EPC_Write           = 1'b0;
         Regwrite            = 1'b0; 
         AluSrcA             = 1'b0; 
         AluSrcB             = 2'b00; 
         Alu_control         = 3'b000;
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b000; 
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -781,6 +797,7 @@ always @(posedge clk) begin
         PC_write            = 1'b0;  
         MEM_write           = 1'b0;
         IR_write            = 1'b0; 
+        EPC_Write           = 1'b0;
         AB_w                = 1'b0;
         Regwrite            = 1'b0; 
         AluSrcA             = 1'b0; 
@@ -788,7 +805,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b000;
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b000; 
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -816,12 +833,13 @@ always @(posedge clk) begin
         IR_write            = 1'b0; 
         AB_w                = 1'b0;
         Regwrite            = 1'b0; 
+        EPC_Write           = 1'b0;
         AluSrcA             = 1'b0; 
         AluSrcB             = 2'b00; 
         Alu_control         = 3'b000;
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b000; 
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -846,6 +864,7 @@ always @(posedge clk) begin
         M_writeReg          = 2'b01; //
         PC_write            = 1'b0;  
         MEM_write           = 1'b0;
+        EPC_Write           = 1'b0;
         IR_write            = 1'b0; 
         AB_w                = 1'b0;
         Regwrite            = 1'b1; //
@@ -854,7 +873,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b000;
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0110; //
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b000; 
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -877,6 +896,7 @@ always @(posedge clk) begin
         ShiftSrc            = 1'b0;
         M_writeReg          = 2'b01; //
         PC_write            = 1'b0;  
+        EPC_Write           = 1'b0;
         MEM_write           = 1'b0;
         IR_write            = 1'b0; 
         AB_w                = 1'b0;
@@ -886,7 +906,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b111; //
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0111; //
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b000; 
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -913,6 +933,7 @@ always @(posedge clk) begin
         PC_write            = 1'b1;  
         MEM_write           = 1'b0;
         IR_write            = 1'b0; 
+        EPC_Write           = 1'b0;
         AB_w                = 1'b0;
         Regwrite            = 1'b0; 
         AluSrcA             = 1'b0; 
@@ -920,7 +941,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b000;
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b01;
+        PCsource            = 3'b001;
         IorD                = 3'b000; 
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -956,7 +977,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b001;
         ALUOutCtrl          = 1'b1;  // Sim, é pra mudar
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b000; 
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -995,7 +1016,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b000;
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0101; //
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b000; 
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -1030,7 +1051,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b000;
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0101; //
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b000; 
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -1066,7 +1087,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b111; //
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b11; //
+        PCsource            = 3'b011; //
         IorD                = 3'b000; 
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -1099,7 +1120,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b111; //
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b11; //
+        PCsource            = 3'b011; //
         IorD                = 3'b000; 
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -1165,7 +1186,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b001;//
         ALUOutCtrl          = 1'b1;//
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b010;//
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -1198,7 +1219,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b001;//
         ALUOutCtrl          = 1'b0;//
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b010; //
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -1231,7 +1252,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b001;//
         ALUOutCtrl          = 1'b0;//
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b010; //
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -1265,7 +1286,7 @@ always @(posedge clk) begin
         MDR_Write           = 1'b1; //
         ALUOutCtrl          = 1'b0; //
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b000; 
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -1307,7 +1328,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b000;
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b010; //  
         controleSS          = 2'b00;//
         controleLS          = 2'b00;
@@ -1340,7 +1361,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b000;
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b010; //  
         controleSS          = 2'b10;//
         controleLS          = 2'b00;
@@ -1373,7 +1394,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b000;
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b010; //
         controleSS          = 2'b01;//
         controleLS          = 2'b00;
@@ -1408,7 +1429,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b000;
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0100; //
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b000;
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -1445,7 +1466,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b000;//
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b10; //
+        PCsource            = 3'b010; //
         IorD                = 3'b000;
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -1478,7 +1499,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b000;
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b00;//
+        PCsource            = 3'b000;//
         IorD                = 3'b000;
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -1510,7 +1531,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b111; // 
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0111; ///
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b000;
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -1544,7 +1565,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b001; //
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b011; //
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -1577,7 +1598,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b001; //
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 3'b011; //
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -1610,7 +1631,7 @@ always @(posedge clk) begin
         Alu_control         = 3'b001; //
         ALUOutCtrl          = 1'b0;
         MEMtoReg            = 4'b0000; 
-        PCsource            = 2'b00;
+        PCsource            = 3'b000;
         IorD                = 3'b011; //
         controleSS          = 2'b00;
         controleLS          = 2'b00;
@@ -1654,7 +1675,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000; 
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0011; //
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 3'b000; 
           controleSS          = 2'b00;
           controleLS          = 2'b00; //
@@ -1689,7 +1710,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000; 
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0011; //
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 3'b000; 
           controleSS          = 2'b00;
           controleLS          = 2'b10; //
@@ -1723,7 +1744,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000; 
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0011; // 
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 3'b000;
           controleSS          = 2'b00;
           controleLS          = 2'b01;//
@@ -1758,7 +1779,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b010; //
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b10; // 
+          PCsource            = 3'b010; // 
           IorD                = 3'b000;
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -1789,7 +1810,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000;
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; //
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 3'b000;
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -1825,7 +1846,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000;
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0001; //
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 3'b000;
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -1858,7 +1879,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000;
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 3'b000;
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -1891,7 +1912,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000;
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 3'b000;
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -1935,7 +1956,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000; 
           ALUOutCtrl          = 1'b1; //
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 3'b000;
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -1968,7 +1989,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000;
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0101; //
-          PCsource            = 2'b00; //
+          PCsource            = 3'b000; //
           IorD                = 3'b000;
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -2004,7 +2025,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000;
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 3'b000;
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -2026,7 +2047,7 @@ always @(posedge clk) begin
 
           if (Div0) begin
 						STATE = ST_DIV_0_1;
-					end
+					end else begin
           
           ShiftAmt            = 2'b00; 
           ShiftControl        = 3'b000; 
@@ -2043,7 +2064,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000;
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 3'b000;
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -2068,7 +2089,7 @@ always @(posedge clk) begin
 
           end
 
-        
+        end
 
       end
 
@@ -2089,7 +2110,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000; //
           ALUOutCtrl          = 1'b1; //
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 3'b100; //
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -2122,7 +2143,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000; //
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 3'b010; //
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -2157,7 +2178,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000; //
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 3'b010; //
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -2192,7 +2213,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000; //
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 3'b100; //
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -2226,7 +2247,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000;
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 3'b100; //
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -2260,8 +2281,8 @@ always @(posedge clk) begin
           Alu_control         = 3'b010; //
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
-          IorD                = 3'b010; //
+          PCsource            = 3'b000;
+          IorD                = 3'b001; //
           controleSS          = 2'b00;
           controleLS          = 2'b00;
           MDR_Write           = 1'b0; 
@@ -2293,8 +2314,8 @@ always @(posedge clk) begin
           Alu_control         = 3'b010; //
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
-          IorD                = 3'b010; //
+          PCsource            = 3'b000;
+          IorD                = 3'b001; //
           controleSS          = 2'b00;
           controleLS          = 2'b00;
           MDR_Write           = 1'b0; 
@@ -2306,10 +2327,78 @@ always @(posedge clk) begin
           div_flag            = 1'b0;
           div_selector        = 1'b0;
         
-          STATE = ST_OVERFLOW_3;
+          STATE = ST_DIV_0_2_WAIT;
 
         end
 
+        ST_DIV_0_2_WAIT: begin
+          
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b0;  
+          EPC_Write           = 1'b0; //
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b01; //
+          Alu_control         = 3'b010; //
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 3'b000;
+          IorD                = 3'b001; //
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+          ExceptionControl    = 2'b10; //
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
+        
+          STATE = ST_DIV_0_3;
+
+        end
+
+        ST_DIV_0_3: begin
+
+          ShiftAmt            = 2'b00; 
+          ShiftControl        = 3'b000; 
+          ShiftSrc            = 1'b0;
+          M_writeReg          = 2'b00;
+          PC_write            = 1'b1;  
+          EPC_Write           = 1'b0;
+          MEM_write           = 1'b0;
+          IR_write            = 1'b0; 
+          AB_w                = 1'b0;
+          Regwrite            = 1'b0; 
+          AluSrcA             = 1'b0;
+          AluSrcB             = 2'b01;
+          Alu_control         = 3'b010;
+          ALUOutCtrl          = 1'b0;
+          MEMtoReg            = 4'b0000; 
+          PCsource            = 3'b100; //
+          IorD                = 3'b001;
+          controleSS          = 2'b00;
+          controleLS          = 2'b00;
+          MDR_Write           = 1'b0; 
+          Mult_Div            = 1'b0;
+          HIWrite             = 1'b0;
+          LOWrite             = 1'b0;
+          ExceptionControl    = 2'b10;
+          mult_flag           = 1'b0;
+          div_flag            = 1'b0;
+          div_selector        = 1'b0;
+
+          STATE = ST_CLOSE_WRITE;
+
+        end
+        
         ST_OVERFLOW_1: begin
 
           ShiftAmt            = 2'b00; 
@@ -2327,7 +2416,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000;
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 3'b000;
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -2361,7 +2450,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000;
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 3'b000;
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -2390,12 +2479,12 @@ always @(posedge clk) begin
           AB_w                = 1'b0;
           Regwrite            = 1'b0; 
           AluSrcA             = 1'b0; //
-          AluSrcB             = 2'b00; //
+          AluSrcB             = 2'b01; //
           Alu_control         = 3'b010; //
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
-          IorD                = 3'b010;
+          PCsource            = 3'b000;
+          IorD                = 3'b001; //
           controleSS          = 2'b00;
           controleLS          = 2'b00;
           MDR_Write           = 1'b0; 
@@ -2428,7 +2517,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b010; //
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b01; //
+          PCsource            = 3'b001; //
           IorD                = 3'b010;
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -2461,7 +2550,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b001; //
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 3'b011; //
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -2494,7 +2583,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b001; //
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 3'b011; //
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -2528,7 +2617,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b001; //
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 3'b011; //
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -2562,7 +2651,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000;
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 3'b000;
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -2596,7 +2685,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000;
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 3'b000;
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -2629,7 +2718,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000;
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0110; //
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 3'b000;
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -2666,7 +2755,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000;
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 2'b00;
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -2701,7 +2790,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000;
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 2'b00;
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -2734,7 +2823,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000;
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 2'b00;
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -2768,7 +2857,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000;
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 2'b00;
           controleSS          = 2'b00;
           controleLS          = 2'b00;
@@ -2809,7 +2898,7 @@ always @(posedge clk) begin
           Alu_control         = 3'b000;
           ALUOutCtrl          = 1'b0;
           MEMtoReg            = 4'b0000; 
-          PCsource            = 2'b00;
+          PCsource            = 3'b000;
           IorD                = 3'b000;
           controleSS          = 2'b00;
           controleLS          = 2'b00;
